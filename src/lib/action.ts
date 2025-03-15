@@ -37,7 +37,7 @@ export const signUpCredentials = async (
       },
     });
   } catch (error) {
-    return { message: "Failed To Register User" ,  data: dataForm};
+    return { message: "Failed To Register User" ,  data: dataForm ,error: error};
   }
   redirect("/login");
 };

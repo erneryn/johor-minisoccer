@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { signInCredetials } from "@/lib/action";
 import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
 
 const intialState: any = {
   error: "",
@@ -70,7 +69,7 @@ const FormLogin = () => {
         {isPending ?  "Signin..." : "Signin" }
       </button>
       <p className="text-sm font-light text-gray-500">
-        Don't Have An Account?
+        Don&apos;t Have An Account?
         <Link href="/register">
           <span className="font-medium pl-1 text-blue-400">Register</span>
         </Link>

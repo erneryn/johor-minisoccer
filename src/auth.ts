@@ -1,28 +1,29 @@
-import NextAuth, { CredentialsSignin , type DefaultSession} from "next-auth"
+import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth"
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from "@/lib/prisma"
 import Credentials from 'next-auth/providers/credentials'
 import { SignInSchema } from '@/lib/formValidation'
 import { compareSync } from "bcrypt-ts"
 
-
 export class CustomError extends CredentialsSignin {
   errorMessage: string
-  constructor(errorMessage : string){
+  constructor(errorMessage: string) {
     super();
     this.errorMessage = errorMessage
   }
 }
 
 declare module "next-auth" {
- 
   interface Session {
     user: {
-      userid: string | any
+      userid: string | null
     } & DefaultSession["user"]
   }
-}
 
+  interface JWT {
+    id: string | null
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -34,21 +35,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
-      console.log(token,user)
-      if (user) { // User is available during sign-in
+      if (user) {
         token.id = user.id
       }
-      return token 
+      return token
     },
     session({ session, token }) {
-      session.user.userid = token.id
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          userid: token.id
-        }
-      }
+      session.user.userid = token.id as string | null
+      return session
     },
   },
   providers: [
@@ -57,7 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {}
       },
-      authorize: async (credentials) => {
+      async authorize(credentials) {
         const validateFields = SignInSchema.safeParse(credentials)
         
         if(!validateFields.success){
@@ -73,8 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new CustomError('Email Not Found')
         }
 
-        const isPasswordMatch = compareSync(password,user.password);
-        console.log("🚀 ~ authorize: ~ isPasswordMatch:", isPasswordMatch)
+        const isPasswordMatch = compareSync(password, user.password)
         
         if(!isPasswordMatch) {
           throw new CustomError('Password Not Valid')

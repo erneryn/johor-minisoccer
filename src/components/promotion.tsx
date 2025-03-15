@@ -1,19 +1,19 @@
-import { promotions } from "@/app/config/config.json";
-import Card from "./card";
+import Card from './card';
+import { promotions } from '@/app/config';
 
 export default function Promotion() {
     return (
         <div className="sm:flex sm:justify-center sm:items-center sm:gap-4">
             <h1 className="text-4xl font-bold text-orange-500 mb-4">Promotion & Event</h1>
-            {promotions.map((promotion) => (
+            {promotions.map((promo) => (
                 <Card 
-                key={promotion.id} 
-                mainTitle={promotion.mainTitle} 
-                title={promotion.title} 
-                buttonLink={promotion.buttonLink}
-                buttonText={promotion.buttonText}
-                description={promotion.description} image={promotion.image} 
-                badge={promotion.badge}
+                key={promo.id} 
+                mainTitle={promo.mainTitle} 
+                title={promo.title} 
+                description={promo.description}
+                buttonText={promo.buttonText}
+                buttonLink={promo.buttonLink}
+                image={promo.image}
                 />
             ))}
         </div>

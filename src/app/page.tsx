@@ -1,10 +1,8 @@
-import { auth } from "@/auth";
-import { signOut } from "@/auth";
 import HeroBanner from "@/components/hero-banner";
 import MainFeature from "@/components/main-feature";
 import FeatureList from '@/components/FeatureList';
 import Card from "@/components/card";
-import { cards } from "@/app/config/config.json";
+import { cards } from "@/app/config";
 import Promotion from "@/components/promotion";
 
 export default async function Home() {
