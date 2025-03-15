@@ -12,6 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      height : {
+        'h-screen-80': '80vh',
+      }
     },
   },
   plugins: [],

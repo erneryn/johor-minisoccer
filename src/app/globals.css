@@ -3,19 +3,59 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background-color: #081521;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
+
+html {
+  background-color: var(--background-color);
+}
+
+.banner {
+  background-image: url('/soccer.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  position: relative;
+}
+
+ .banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  z-index: 1;
+} 
+
+ .banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  z-index: 1;
+} 
+
+/* Apply Zen Dots font globally */
+body, h1, h2, h3, h4, h5, h6, p, span, a, button {
+  font-family: 'Zen Dots', cursive;
+}
+
+/* Utility class for specific elements */
+.zen-dots {
+  font-family: 'Zen Dots', cursive;
+}
+
+

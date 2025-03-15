@@ -1,0 +1,64 @@
+{
+    "features": [
+        {
+            "id": 1,
+            "icon": "LifebuoyIcon",
+            "title": "30m x 50m",
+            "description": "The field is 7 vs 7, which is the standard size for mini soccer fields."
+        },
+        {
+            "id": 2,
+            "icon": "UserGroupIcon",
+            "title": "Look like a pro Benches",
+            "description": "The benches are designed for the players to sit and rest."
+        },
+        {
+            "id": 3,
+            "icon": "BuildingStorefrontIcon",
+            "title": "Coffe Shop",
+            "description": "We have a coffee shop that serves a variety of coffee and snacks."
+        },
+        {
+            "id": 4,
+            "icon": "SparklesIcon",
+            "title": "Locker Room & Bathroom",
+            "description": "We have a locker room and bathroom that are designed to be comfortable and supportive."
+        }
+    ],
+    "cards": [
+        {
+            "id": 1,
+            "mainTitle": "Start From",
+            "title": "Rp. 200.000 / 2 Hours",
+            "description": "Book your next game now",
+            "buttonText": "Book Now",
+            "buttonLink": "/register",
+            "image": "https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2552&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "id": 2,
+            "title": "Coffe Shop",
+            "description": "Enjoy a cup of coffee while you wait for your game to start.",
+            "image": "https://images.unsplash.com/photo-1536319229365-83318cdc7b83?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+    ],
+    "promotions": [
+        {
+            "id": 1,
+            "mainTitle":"Grand Opening",
+            "title": "Start From Rp.150.000",
+            "description": "/ 2 hours (Promo 10% Off)",
+            "buttonText": "Book Now",
+            "buttonLink": "/register",
+            "image": "https://images.unsplash.com/photo-1587329310686-91414b8e3cb7?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "badge": "Promo"
+        },
+        {
+            "id": 2,
+            "title": "Coffee Day",
+            "description": "Promo 50% Off All Coffee",
+            "image": "https://images.unsplash.com/photo-1536319229365-83318cdc7b83?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "badge": "Promo"
+        }
+    ]
+}
