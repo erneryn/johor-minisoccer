@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { signInCredetials } from "@/lib/action";
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const intialState: any = {
   error: "",
@@ -13,9 +14,11 @@ const intialState: any = {
 };
 const FormLogin = () => {
   const [state, formAction, isPending] = useActionState(signInCredetials, intialState);
-  console.log("🚀 ~ FormLogin ~ state:", state)
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   return (
     <form action={formAction} className="space-y-6">
+      <input type="hidden" name="redirectTo" value={redirectTo} />
       {state.message ? (
         <div
           className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"

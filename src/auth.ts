@@ -44,6 +44,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.userid = token.id as string | null
       return session
     },
+    redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (url.startsWith("http")) return url;
+      return baseUrl;
+    },
   },
   providers: [
     Credentials({

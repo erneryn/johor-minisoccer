@@ -3,10 +3,10 @@ import { RegisterSchema, SignInSchema } from "@/lib/formValidation";
 import { hashSync } from "bcrypt-ts";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { signIn, CustomError } from "@/auth";
+import { signIn, signOut, CustomError } from "@/auth";
 
 export const signUpCredentials = async (
-  prevState: unknown,
+  _: unknown,
   formData: FormData
 ) => {
   const validateForm = RegisterSchema.safeParse(
@@ -63,7 +63,9 @@ export const signInCredetials = async (prevState: unknown, formData: FormData) =
   const { email, password } = validateForm.data;
 
   try {
-    await signIn("credentials", { email, password, redirectTo: "/" });
+    
+    const redirectTo = formData.get("redirectTo") as string || '/';
+    await signIn("credentials", { email, password, redirectTo});
     return {
       data: dataForm
     };
@@ -88,3 +90,8 @@ export const signInCredetials = async (prevState: unknown, formData: FormData) =
     throw error;
   }
 };
+
+
+export async function handleSignOut() {
+  await signOut({ redirectTo: '/', redirect: true })
+} 
