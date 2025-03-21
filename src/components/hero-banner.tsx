@@ -15,7 +15,7 @@ export default function HeroBanner() {
             </p>
             
               <div className="flex flex-wrap gap-4">
-                <MainButton text="Book Now" link="/register" />
+                <MainButton text="Book Now" link="/booking" />
               </div>
           
           </div>
