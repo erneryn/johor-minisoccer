@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MEDAN CRITERIUM REGISTRATION</title>
+    <style>
+        html,
+        body {
+            position: relative;
+            border: 0;
+            padding: 0;
+            font-family: Poppins, Arial, sans-serif;
+            color: black;
+        }
+
+        h1 {
+            font-family: Poppins, Arial, sans-serif;
+            line-height: 1.2;
+            letter-spacing: 0;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: Poppins, Arial, sans-serif;
+            line-height: 1.5;
+            letter-spacing: 0.3px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        p {
+            margin: 0;
+            font-family: Poppins, Arial, sans-serif;
+            line-height: 1.5;
+            padding: 0px;
+        }
+
+        .header {
+            padding-left: 10px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .registration-info {
+            width: 80vw;
+            padding: 10px;
+        }
+
+        .left {
+            display: inline-block;
+            width: 46%;
+            vertical-align: middle;
+            align-self: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .right {
+            display: inline-block;
+            width: 48%;
+            vertical-align: middle;
+            align-self: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .center {
+            display: inline-block;
+        }
+
+        #content {
+            padding: 25px;
+            height: 100%;
+        }
+
+        .rowParentGray {
+            display: flex;
+            border: thin solid;
+            flex-direction: column;
+            border-color: #EBECED;
+            padding-bottom: 10px;
+        }
+
+        .rowContent {
+            display: block;
+        }
+
+        .line {
+            width: 546px;
+            border-top: 1.5px double #979797;
+        }
+
+        .triangle-bottomright {
+            width: 0;
+            height: 0;
+            border-bottom: 14px solid #FFFFFF;
+            border-left: 14px solid transparent;
+            right: -1px;
+            bottom: -1px;
+            position: absolute;
+        }
+
+        .labelLeft {
+            height: 25px;
+            color: #0F2236;
+            font-family: Poppins, Arial, sans-serif;
+            font-size: 10px;
+            font-weight: normal;
+            line-height: 25px;
+        }
+
+        .labelRight {
+            height: 25px;
+            color: #0F2236;
+            font-family: Poppins, Arial, sans-serif;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 25px;
+        }
+
+        .centerLabel {
+            font-family: Poppins, Arial, sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 12px;
+            color: #0F2236;
+        }
+
+        ul.steps li {
+            position: relative;
+            margin-bottom: 0;
+            padding-bottom: 1rem;
+            padding-top: 14px;
+            padding-left: 1rem;
+            list-style: none;
+            max-width: 25%;
+            color: black;
+        }
+
+        .mt-header {
+            margin-top: 7rem;
+        }
+
+        @media (max-width: 550px) {
+            ul.steps li {
+                max-width: 100%;
+            }
+
+            .step-2 {
+                margin-top: 12px;
+            }
+
+            .step-3 {
+                margin-top: 10px;
+            }
+
+            .mt-header {
+                margin-top: 0rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>CONFIRMATION</h1>
+        </div>
+        <div class="header">
+            <img src="https://res.cloudinary.com/deyzubayn/image/upload/v1742825846/bookings/djwhdicabhupsvnabcnp.jpg" style="width: 200px;" />
+        </div>
+
+        <div style="padding: 20px;">
+            <p>Hai, <span style="font-weight:bold">{{name}}</span></p>
+            &nbsp;
+            <p>Terimakasih sudah melakukan Booking di Johor Mini Soccer</p>
+            <p>Mohon<span style="font-weight: 900;"> menunggu untuk proses validasi</span> pembayaran anda </p>
+            <p>Setelah proses validasi, kami akan mengirimkan kembali email status pembayaran kepada anda</p>
+
+            <h4>Data Booking anda :</h4>
+            <div style="display: flex; justify-items: center; align-items: center;">
+                <div class="registration-info">
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tbody>
+                            <tr style="background-color: rgb(221, 221, 221);">
+                                <td style="padding: 10px; width: 30%; font-size: smaller;">Nomor Booking</td>
+                                <td style="font-weight: 600;">
+                                    <div style="background-color: rgb(228, 190, 153); text-align: center;">{{booking_id}}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="background-color: rgb(221, 221, 221);">
+                                <td style="padding: 10px; width: 30%; font-size: smaller;">Nama</td>
+                                <td style="font-weight: 600;">{{email}}</td>
+                            </tr>
+                            <tr style="background-color: rgb(199, 198, 198);">
+                                <td style="padding: 10px; width: 30%; font-size: smaller;">No Handphoe</td>
+                                <td style="font-weight: 600;">{{mobile_number}}</td>
+                            </tr>
+                            <tr style="background-color: rgb(199, 198, 198);">
+                                <td style="padding: 10px; width: 30%; font-size: smaller;">Nama Club / Team</td>
+                                <td style="font-weight: 600;">{{club_name}}</td>
+                            </tr>
+                            <tr style="background-color: rgb(221, 221, 221);">
+                                <td style="padding: 10px; width: 30%; font-size: smaller;">Waktu</td>
+                                <td style="font-weight: 600;">{{date}} , {{hour}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                &nbsp;
+    
+                <p style="margin-top: 20px;">Untuk informasi booking dan bantuan mohon hubungi kami</p>
+                <p style="font-style: italic;"><span style="font-weight: bold;">081270252098</span>( Whatsapp )</p>
+
+                <p style="margin-top: 40px;">Salam Olahraga</p>
+                <p style="font-style: italic;"><span style="font-weight: bold;">Johor Mini Soccer</span></p>
+            </div>
+            <div style="width: full; height: 10px; background-color: rgb(255, 123, 0);"></div>
+        </div>
+    </div>
+</body>
+
+</html>
