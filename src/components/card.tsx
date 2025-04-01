@@ -19,7 +19,7 @@ export default function Card({mainTitle, title, description, buttonText, buttonL
 
   return (
     <div className='container mx-auto px-1 sm:px-6 md:px-8 sm:w-4/5 space-y-8 py-6'>
-    <div className="relative overflow-hidden rounded-2xl bg-gray-800 shadow-xl h-[50vh] cursor-pointer" onClick={() => setShowZoom(true)}>
+    <div className="relative overflow-hidden rounded-2xl bg-gray-800 shadow-xl h-[50vh] cursor-pointer" onClick={() => setShowZoom(!buttonLink && !buttonText)}>
     {badge && (
           <div className="absolute top-0 right-0 z-20">
             <span className="bg-orange-500 text-white px-4 py-1  text-sm font-semibold uppercase tracking-wider shadow-lg">
@@ -38,9 +38,13 @@ export default function Card({mainTitle, title, description, buttonText, buttonL
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4dHRsdHR4dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/2wBDAR0XFyAeIRshIRshHRsdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
           placeholder="blur"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+        {
+          buttonLink && buttonText && (
+          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
           <span className="text-white text-lg font-semibold">Click to zoom</span>
         </div>
+        )
+        }
       </div>
       {/* <div className="absolute inset-0 bg-black/50"></div> */}
       <div className="p-6 absolute left-0  right-0 bottom-0 z-10">
