@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { sendConfirmationEmail } from '@/lib/email';
+import sharp from 'sharp';
 
 // Types
 interface BookingData {
@@ -20,6 +21,9 @@ interface BookingData {
 // Constants
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png'];
+const MAX_WIDTH = 1200;
+const MAX_HEIGHT = 800;
+const QUALITY = 80;
 
 // Configure services
 cloudinary.config({ 
@@ -45,6 +49,34 @@ async function validateFormData(formData: FormData): Promise<BookingData> {
   return { date, hour, email, phoneNumber, clubName, fieldId, price };
 }
 
+async function resizeImage(buffer: Buffer): Promise<Buffer> {
+  const image = sharp(buffer);
+  const metadata = await image.metadata();
+  
+  // Calculate new dimensions while maintaining aspect ratio
+  let width = metadata.width;
+  let height = metadata.height;
+  
+  if (width && height) {
+    if (width > MAX_WIDTH) {
+      height = Math.round((height * MAX_WIDTH) / width);
+      width = MAX_WIDTH;
+    }
+    if (height > MAX_HEIGHT) {
+      width = Math.round((width * MAX_HEIGHT) / height);
+      height = MAX_HEIGHT;
+    }
+  }
+
+  return image
+    .resize(width, height, {
+      fit: 'inside',
+      withoutEnlargement: true
+    })
+    .jpeg({ quality: QUALITY })
+    .toBuffer();
+}
+
 async function handleFileUpload(file: File | null): Promise<string | null> {
   if (!file) return null;
 
@@ -58,7 +90,10 @@ async function handleFileUpload(file: File | null): Promise<string | null> {
 
   const fileBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(fileBuffer);
-  const base64String = buffer.toString('base64');
+  
+  // Resize image before upload
+  const resizedBuffer = await resizeImage(buffer);
+  const base64String = resizedBuffer.toString('base64');
   const dataURI = `data:${file.type};base64,${base64String}`;
 
   const uploadResponse = await cloudinary.uploader.upload(dataURI, {
@@ -104,10 +139,11 @@ export async function POST(request: NextRequest) {
 
     // Handle file upload
     const file = formData.get('file') as File;
+    
     const fileUrl = await handleFileUpload(file);
     bookingData.fileUrl = fileUrl;
     bookingData.userId = session?.user?.id;
-
+    
     // Create booking
     const booking = await createBooking(bookingData);
 

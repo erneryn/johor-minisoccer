@@ -25,7 +25,7 @@ const Navbar = async () => {
         
         {/* Mobile menu button */}
         <div className="md:hidden">
-          <MobileNav />
+          <MobileNav session={session} />
         </div>
         
         {/* Desktop menu */}

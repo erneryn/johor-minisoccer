@@ -19,7 +19,8 @@ const DesktopNav = ({session}: {session: any}) => {
     );
   }
   if (session) {
-    <div className="hidden md:flex items-center space-x-4">
+    return (
+      <div className="hidden md:flex items-center space-x-4">
 
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-white hover:text-orange-500">
@@ -29,11 +30,15 @@ const DesktopNav = ({session}: {session: any}) => {
           Booking
         </Link>
       </div>
+      <Link href="/my-booking" className="text-white hover:text-orange-500">
+        My Booking
+      </Link>
       <span className="text-sm text-white">
         Hello, {session.user.name || session.user.email}
       </span>
       <LogoutButton />
-    </div>;
+    </div>
+    );
   }
 
   return (
