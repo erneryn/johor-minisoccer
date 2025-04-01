@@ -11,8 +11,6 @@ export default function Promotion() {
                 mainTitle={promo.mainTitle} 
                 title={promo.title} 
                 description={promo.description}
-                buttonText={promo.buttonText}
-                buttonLink={promo.buttonLink}
                 image={promo.image}
                 />
             ))}

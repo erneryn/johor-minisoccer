@@ -7,7 +7,7 @@ import Loading from "@/components/loading";
 import Link from "next/link";
 import Image from "next/image";
 import { Toast, ToastToggle } from "flowbite-react";
-import { HiCheck, HiExclamation, HiX } from "react-icons/hi";
+import { HiCheck, HiExclamation } from "react-icons/hi";
 
 
 const BookingDetail = () => {
@@ -83,9 +83,9 @@ const BookingDetail = () => {
     <div className="relative container mx-auto px-4 sm:px-6 md:px-8 sm:w-4/5 space-y-8 py-12">
 			{isSuccess && <Toast className="absolute top-0 left-2 sm:w-1/4 w-full flex justify-between items-center">
         <div className="inline-flex shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-          {booking?.status == 'COMPLETED' ? <HiCheck className="h-5 w-5" /> : <HiX className="h-5 w-5" />}
+          <HiCheck className="h-5 w-5" /> 
         </div>
-        <div className="ml-3 text-sm font-normal">Successfully {booking?.status == 'COMPLETED' ? 'approved' : 'rejected'} booking.</div>
+        <div className="ml-3 text-sm font-normal">Successfully modified booking.</div>
         <ToastToggle className="m-0" onDismiss={() => setIsSuccess(false) }  />
       </Toast>}
 			{
