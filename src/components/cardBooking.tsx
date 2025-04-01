@@ -7,19 +7,40 @@ const CardBooking = ({
     selectedDate: string,
     handleBooking: () => void
   }) => {
+
+  const Tag = ({field}: {field: Field & { isAvailable: boolean, type: string }}) => {
+    if(field.isAvailable) {
+      return (
+        <>
+          <span className="bg-blue-900 text-white text-xs font-medium px-5 py-2">
+            Available
+          </span>
+          {field.type === "weekend" ? (
+            <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
+              Weekend
+            </span>
+          ) : field.type === "promo" ? (
+            <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
+              Promo
+            </span>
+          ) : (
+            <span className="bg-gray-500 text-white text-xs font-medium px-5 py-2">
+              Weekday
+            </span>
+          )}
+        </>
+      );
+    } else {
+      return <span className="bg-gray-400 text-gray-700 text-xs font-medium px-5 py-2">
+      Booked
+    </span>
+    }
+  }
   return (
     <div key={field.id} className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-6 relative">
         <div className="flex justify-between items-center mb-2 absolute top-0 left-0">
-          {field.isAvailable ? (
-            <span className="bg-blue-900 text-white text-xs font-medium px-5 py-2">
-              Available
-            </span>
-          ) : (
-            <span className="bg-gray-400 text-gray-700 text-xs font-medium px-5 py-2">
-              Booked
-            </span>
-          )}
+         <Tag field={field}/>
         </div>
         <p className="text-gray-600 mb-4 mt-10">{field.description}</p>
         <div className="flex justify-between items-center">

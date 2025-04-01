@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { PhoneIcon , MapPinIcon } from "@heroicons/react/24/outline";
 import Link from 'next/link';
+import { auth } from "@/auth";
+const Footer = async () => {
+  const session = await auth();
 
-const Footer = () => {
     return (
         <footer className="bg-gray-800 text-white py-4">
             <div className="container mx-auto px-4 sm:px-6 md:px-8 flex items-center w-10/12 py-10">
@@ -12,7 +14,11 @@ const Footer = () => {
                   <h3 className="text-3xl font-bold mt-10">Johor Mini Soccer</h3>
                   <ul className="mt-2 space-y-2">
                     <li><Link href="/" className="hover:text-orange-500">Home</Link></li>
-                    <li><Link href="/booking" className="hover:text-orange-500">Booking</Link></li>
+                    {
+                      !session && (
+                        <li><Link href="/booking" className="hover:text-orange-500">Booking</Link></li>
+                      )
+                    }
                   </ul>
                 </div>
                 <div className="w-full">

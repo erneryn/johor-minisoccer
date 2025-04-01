@@ -17,11 +17,19 @@ declare module "next-auth" {
   interface Session {
     user: {
       userid: string | null
+      role: string | null
     } & DefaultSession["user"]
+  }
+
+  interface User {
+    id?: string
+    email?: string | null
+    role?: string | null
   }
 
   interface JWT {
     id: string | null
+    role: string | null
   }
 }
 
@@ -37,11 +45,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        token.role = user.role || "user"
       }
       return token
     },
     session({ session, token }) {
-      session.user.userid = token.id as string | null
+      if (session.user) {
+        session.user.userid = token.id as string | null
+        session.user.role = token.role as string | null
+      }
       return session
     },
     redirect({ url }) {
@@ -50,6 +62,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       else if (url.startsWith("http")) return url;
       return baseUrl;
     },
+    authorized({ request, auth }) {
+      const isLoggedIn = !!auth?.user;
+      const isAdmin = auth?.user?.role === 'admin';
+      const isAllowedPath = request.nextUrl.pathname.startsWith('/admin');
+
+      if (isAllowedPath) {
+        if (!isLoggedIn) return false;
+        if (!isAdmin) return false;
+        return true;
+      }
+      return true;
+    }
   },
   providers: [
     Credentials({
@@ -66,7 +90,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const { email, password } = validateFields.data
         const user = await prisma.user.findUnique({
-          where: {email}
+          where: {email},
+          select: {
+            id: true,
+            email: true,
+            password: true,
+            role: true
+          }
         })
 
         if(!user || !user.password) {
@@ -79,7 +109,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new CustomError('Password Not Valid')
         }
 
-        return user
+        return {
+          id: user.id,
+          email: user.email,
+          role: user.role || "user"
+        }
       }
     })
   ],

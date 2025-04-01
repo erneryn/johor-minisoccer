@@ -11,6 +11,7 @@ interface FormData {
   clubName: string
   file: File | null
   userId: string
+  price: string
 }
 
 interface FormBookingProps {
@@ -18,9 +19,12 @@ interface FormBookingProps {
   selectedDate: string
   hour: string
   onSuccesSubmit: () => void
+  onSubmmiting: () => void
+  onErrorSubmit: () => void
+  price: number
 }
 
-const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingProps) => {
+const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubmmiting , onErrorSubmit}: FormBookingProps) => {
   const { session, loading } = useServerSession()
   const [formData, setFormData] = useState<FormData>({
     date: selectedDate || new Date().toISOString().split('T')[0],
@@ -29,7 +33,8 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
     userId: session?.user?.userid || '',
     phoneNumber: '',
     clubName: '',
-    file: null
+    file: null,
+    price : `${price}`,
   })
 
   useEffect(() => {
@@ -57,6 +62,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
     e.preventDefault()
     setIsSubmitting(true)
     setError('')
+    onSubmmiting()
 
     try {
       const formDataToSend = new FormData()
@@ -66,6 +72,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
       formDataToSend.append('phoneNumber', formData.phoneNumber)
       formDataToSend.append('clubName', formData.clubName)
       formDataToSend.append('userId', formData.userId)
+      formDataToSend.append('price', formData.price)
       if (formData.file) {
         formDataToSend.append('file', formData.file)
       }
@@ -84,6 +91,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
 
       onSuccesSubmit()
     } catch (err) {
+      onErrorSubmit()
       setError('Failed to submit booking. Please try again.')
       throw err
     } finally {
@@ -98,7 +106,6 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
   return (
     <div className="container bg-white mx-auto sm:px-6 md:px-8 py-6 rounded-xl my-4">
       <h1 className="text-2xl font-bold text-orange-500 mb-8 px-4">Booking Form</h1>
-      
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -144,7 +151,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
             id="email"
             value={formData.email}
             onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-gray-400"
+            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-gray-700"
             required
           />
         </div>
@@ -174,7 +181,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit}: FormBookingP
             id="clubName"
             value={formData.clubName}
             onChange={(e) => setFormData(prev => ({ ...prev, clubName: e.target.value }))}
-            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-gray-400"
+            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-gray-700"
             required
           />
         </div>

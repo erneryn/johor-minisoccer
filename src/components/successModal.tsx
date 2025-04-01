@@ -22,6 +22,7 @@ const SuccessModal = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Booking Successful!</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Please Check your Inbox/Spam Email</h3>
               <p className="text-sm text-gray-500">Redirecting to homepage... in {countdown} seconds</p>
             </div>
           </div>

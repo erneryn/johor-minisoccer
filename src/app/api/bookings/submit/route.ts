@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from 'cloudinary';
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
-import nodemailer from 'nodemailer';
-import fs from 'fs';
-import handlebars from 'handlebars';
+import { sendConfirmationEmail } from '@/lib/email';
 
 // Types
 interface BookingData {
@@ -16,6 +14,7 @@ interface BookingData {
   fieldId: string;
   fileUrl?: string | null;
   userId?: string;
+  price: string;
 }
 
 // Constants
@@ -37,12 +36,13 @@ async function validateFormData(formData: FormData): Promise<BookingData> {
   const phoneNumber = formData.get('phoneNumber') as string;
   const clubName = formData.get('clubName') as string;
   const fieldId = formData.get('fieldId') as string;
+  const price = formData.get('price') as string
 
-  if (!date || !hour || !email || !phoneNumber || !clubName || !fieldId) {
+  if (!date || !hour || !email || !phoneNumber || !clubName || !fieldId || !price) {
     throw new Error('Missing required fields');
   }
 
-  return { date, hour, email, phoneNumber, clubName, fieldId };
+  return { date, hour, email, phoneNumber, clubName, fieldId, price };
 }
 
 async function handleFileUpload(file: File | null): Promise<string | null> {
@@ -85,40 +85,11 @@ async function createBooking(data: BookingData) {
       fieldId: data.fieldId,
       userId: data.userId,
       status: 'PENDING',
-      totalPrice: 0,
+      totalPrice: Number(data.price) || 0,
     },
     include: {
       field: true
     }
-  });
-}
-
-async function sendConfirmationEmail(booking: any, date: string, hour: string) {
-  const templateEmail = fs.readFileSync(`${process.cwd()}/public/waitingConfirmation.html`, 'utf-8');
-  const renderTemplate = handlebars.compile(templateEmail);
-  const content = renderTemplate({
-    email: booking.email,
-    booking_id: booking.id,
-    date,
-    hour,
-    club_name: booking.clubName,
-    mobile_number: booking.phoneNumber,
-  });
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD
-    }
-  });
-
-  return transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: booking.email,
-    cc: 'johorminisoccer2025@gmail.com',
-    subject: 'Booking Confirmation',
-    html: content
   });
 }
 

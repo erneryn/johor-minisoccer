@@ -33,7 +33,7 @@ export const signUpCredentials = async (
       data: {
         name,
         email,
-        password: hashedPassword,
+        password: hashedPassword
       },
     });
   } catch (error) {

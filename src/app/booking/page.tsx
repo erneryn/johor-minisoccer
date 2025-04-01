@@ -15,25 +15,29 @@ const Booking = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [fieldId, setFieldId] = useState('');
   const [loadingField, setLoadingField ] = useState(false)
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const getAvailableFields = async () => {
     setAvailableFields([]);
+    setError(null);
     try { 
       setLoadingField(true)
       const response = await fetch(`/api/bookings/available?date=${selectedDate}`);
       if (!response.ok) {
-        return new Error('Failed to fetch fields');
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to fetch fields');
+        return new Error(errorData.error || 'Failed to fetch fields');
       }
       const data = await response.json();
       setAvailableFields(data.fields);
     } catch (error) {
-      console.error('Error fetching available fields:', error);
+      console.log(error)
     } finally {
       setLoadingField(false)
     }
   }
-
+  console.log(error)
   const handleBooking = (fieldId: string) => {
     if (!session) {
       setFieldId(fieldId);
@@ -100,6 +104,7 @@ const Booking = () => {
             Available Fields
           </h2>
       {!availableFields.length && <p className='text-gray-400 mt-0'>no data</p>}
+      {error && <p className='text-red-500 mt-0'>{error}</p>}
       {loadingField && <Loading />}
       {availableFields.length > 0 && (
         <div className="mt-8">

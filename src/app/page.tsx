@@ -12,7 +12,7 @@ export default async function Home() {
     <MainFeature />
     <FeatureList />
     {cards.map((card) => (
-      <Card 
+      <Card   
       key={card.id}
       mainTitle={card.mainTitle}
       title={card.title} 

@@ -22,12 +22,53 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Check if selected date is within 30 days from today
+    // const maxDate = new Date(today);
+    // maxDate.setDate(maxDate.getDate() + (process.env.MAX_BOOKING_DAYS ? parseInt(process.env.MAX_BOOKING_DAYS) : 30));
+    // const maxDateTime = maxDate.setHours(0, 0, 0, 0);
+
+    // if (selectedDate > maxDateTime) {
+    //   return NextResponse.json(
+    //     { error: `Selected date must be within ${process.env.MAX_BOOKING_DAYS ? parseInt(process.env.MAX_BOOKING_DAYS) : 30} days from today` },
+    //     { status: 400 }
+    //   );
+    // }
+    // Check if selected date is weekend
+    const selectedDay = new Date(date).getDay();
+    const isWeekend = selectedDay === 0 || selectedDay === 6; // 0 is Sunday, 6 is Saturday
+
     // Get all active fields
     const fields = await prisma.field.findMany({
       where: {
+        OR: [
+          {
+            type: isWeekend ? 'weekend' : 'regular'
+          },
+          {
+            type: 'promo',
+            AND: [
+              {
+                startDate: {
+                  lte: new Date(date)
+                }
+              },
+              {
+                endDate: {
+                  gte: new Date(date)
+                }
+              }
+            ]
+          }
+        ]
       },
+      orderBy: {
+        description: 'asc'
+      }
     });
 
+    // Filter to only show promo fields if they exist
+    const promoFields = fields.filter(field => field.type === 'promo');
+    const filteredFields = promoFields.length > 0 ? promoFields : fields;
     // get booking by date
     const bookings = await prisma.booking.findMany({
       where: {
@@ -38,13 +79,14 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const availableFields = fields.map((field) => {
+    const availableFields = filteredFields.map((field) => {
       const availableTimeSlots = bookings.filter((booking) => booking.fieldId === field.id).map((booking) => ({
         startTime: booking.startTime,
         endTime: booking.endTime
       }))
       return {
         ...field,
+        price: field.type === 'promo' ? isWeekend ? field.weekendPrice : field.price : field.price,
         isAvailable: availableTimeSlots.length === 0
       }
     })

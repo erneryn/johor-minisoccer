@@ -6,6 +6,8 @@ import { Field } from "@prisma/client";
 import Loading from "@/components/loading";
 import FormBooking from "@/components/formBooking";
 import SuccessModal from "@/components/successModal";
+import ErrorModal from '@/components/errorModal'
+import LoadingModal from "../loadingModal";
 
 const BookingForm = () => {
   const searchParams = useSearchParams()
@@ -15,6 +17,8 @@ const BookingForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [field, setField] = useState<Field | null>(null);
   const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false)
+  const [modalSubmmiting, setModalSubmitting] = useState(false)
   const router = useRouter();
 
 
@@ -41,12 +45,21 @@ const BookingForm = () => {
   }, [id, selectedDate]);
 
   const onSuccesSubmit = () => {
+    setModalSubmitting(false)
     setModalSuccess(true)
     setTimeout(() => {
       router.push('/')
     }, 5000)
   }
 
+  const onSubmmiting = () => {
+    setModalSubmitting(true)
+  }
+
+  const onErrorSubmit = () => {
+    setModalSubmitting(false)
+    setModalError(true)
+  }
 
   if(error) {
     return (
@@ -109,8 +122,10 @@ const BookingForm = () => {
       </div>
 
       <FormBooking fieldId={id} selectedDate={selectedDate} hour={field?.description || '' }
-      onSuccesSubmit={onSuccesSubmit} />
+      onSuccesSubmit={onSuccesSubmit} price={field.price} onSubmmiting={onSubmmiting} onErrorSubmit={onErrorSubmit}/>
       {modalSuccess && <SuccessModal/>}
+      {modalSubmmiting && <LoadingModal/>}
+      {modalError && <ErrorModal onClose={() => setModalError(false) }/>}
     </div>
   )
 };

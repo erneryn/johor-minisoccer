@@ -1,43 +1,38 @@
 import { useState, useEffect } from 'react'
+import { DefaultSession } from "next-auth"
 
-interface User {
-  name?: string
-  email?: string
-  userid?: string
-  // Add other user properties you need
+type User = DefaultSession["user"] & {
+  userid: string | null
+  role: string
 }
 
 interface Session {
   user?: User
   expires?: string
-  // Add other session properties you need
 }
 
-export const useServerSession = () => {
+export function useServerSession() {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const getSession = async () => {
-    try {
-      const response = await fetch('/api/auth/session')
-      const sessionData = await response.json()
-      setSession(sessionData)
-    } catch (error) {
-      console.error('Error fetching session:', error)
-      setSession(null)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const refreshSession = () => {
-    setLoading(true)
-    getSession()
-  }
-
   useEffect(() => {
-    getSession()
+    const fetchSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session')
+        if (!response.ok) {
+          throw new Error('Failed to fetch session')
+        }
+        const data = await response.json()
+        setSession(data)
+      } catch (error) {
+        console.error('Error fetching session:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSession()
   }, [])
 
-  return { session, loading, refreshSession }
+  return { session, loading }
 } 

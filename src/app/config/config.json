@@ -29,7 +29,7 @@
         {
             "id": 1,
             "mainTitle": "Start From",
-            "title": "Rp. 200.000 / 2 Hours",
+            "title": "Rp. 595.000 / 2 Hours",
             "description": "Book your next game now",
             "buttonText": "Book Now",
             "buttonLink": "/booking",
@@ -45,19 +45,19 @@
     "promotions": [
         {
             "id": 1,
-            "mainTitle":"Grand Opening",
-            "title": "Start From Rp.150.000",
-            "description": "/ 2 hours (Promo 10% Off)",
-            "buttonText": "Book Now",
+            "mainTitle":"",
+            "title": "",
+            "description": "",
+            "buttonText": "",
             "buttonLink": "/booking",
-            "image": "https://images.unsplash.com/photo-1587329310686-91414b8e3cb7?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1743481911/wg42if4jomxt3necplht.jpg",
             "badge": "Promo"
         },
         {
             "id": 2,
-            "title": "Coffee Day",
-            "description": "Promo 50% Off All Coffee",
-            "image": "https://images.unsplash.com/photo-1536319229365-83318cdc7b83?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "title": "",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1743481978/s5d32x86bvsnhkawqdcp.jpg",
             "badge": "Promo"
         }
     ]

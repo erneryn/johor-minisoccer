@@ -49,6 +49,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
+  role         String?
   expires      DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -67,11 +68,13 @@ model VerificationToken {
 
 model Field {
   id          String    @id @default(cuid())
-  name        String    @unique
-  description String?   @db.Text
+  name        String    
+  description String?
   price       Float
-  priority    Int       @default(0)
-  isActive    Boolean   @default(true)
+  weekendPrice Float?
+  type        String
+  startDate   DateTime?  
+  endDate     DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   bookings    Booking[]
@@ -99,7 +102,7 @@ model Booking {
 
 enum BookingStatus {
   PENDING
-  CONFIRMED
-  CANCELLED
+  REJECTED
   COMPLETED
+  CANCELLED
 }
