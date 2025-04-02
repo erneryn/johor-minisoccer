@@ -75,7 +75,10 @@ export async function GET(request: NextRequest) {
         startTime: {
           gte: new Date(date),
           lt: new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
-        }
+        },
+        status: {
+          in: ['PENDING', 'COMPLETED']
+        },
       }
     })
 

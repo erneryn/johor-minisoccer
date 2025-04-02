@@ -7,6 +7,8 @@ import {
   TableHeadCell,
   TableRow,
   Pagination,
+  Select,
+  TextInput
 } from "flowbite-react";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -29,8 +31,19 @@ export interface BookingWithField {
 const AdminPage = () => {
   const [bookings, setBookings] = useState<BookingWithField[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const onPageChange = (page: number) => setCurrentPage(page);
+
+
+  const statusOptions = [
+    { value: "ALL", label: "All Status" },
+    { value: "PENDING", label: "Pending" },
+    { value: "REJECTED", label: "Rejected" },
+    { value: "COMPLETED", label: "Completed" },
+  ];
 
   const formatDate = (date: Date, type: "date" | "datetime") => {
     date = new Date(date);
@@ -55,26 +68,51 @@ const AdminPage = () => {
       })
     );
   };
-  const fetchBookings = async (currentPage: number) => {
+
+  const fetchBookings = async (currentPage: number, status: string, search: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/bookings?page=${currentPage}`);
+      const response = await fetch(`/api/bookings?page=${currentPage}&status=${status}&email=${search}`);
       const data = await response.json();
       setBookings(data.bookings);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching bookings:", error);
-    } finally{
-      setIsLoading(false);      
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchBookings(currentPage);
-  }, [currentPage]);
+    fetchBookings(currentPage, statusFilter, searchQuery);
+  }, [currentPage, statusFilter, searchQuery]);
 
-  console.log(bookings);
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(e.target.value);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
+
   return (
     <div className="bg-white container mx-auto">
+      <div className="p-5 flex justify-end">
+        <Select
+          className="w-48"
+          value={statusFilter}
+          onChange={handleStatusChange}
+        >
+          {statusOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
+        <TextInput
+          className="w-72 pl-5"
+          placeholder="Search by email"
+          value={searchQuery}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+        />
+      </div>
       <div className="overflow-x-auto">
         <Table hoverable>
           <TableHead>
@@ -92,18 +130,17 @@ const AdminPage = () => {
               </TableHeadCell>
             </TableRow>
           </TableHead>
-            <TableBody className="divide-y">
-              {
-              isLoading ? (
-                <TableRow className="flex justify-center items-center h-20">
-                  <TableCell colSpan={8} className="text-center">
-                    Loading...
-                  </TableCell>
-                </TableRow>
-              ) : (
-                bookings.map((booking) => (
-                  <TableRow
-                    key={booking.id}
+          <TableBody className="divide-y">
+            {isLoading ? (
+              <TableRow className="flex justify-center items-center h-20">
+                <TableCell colSpan={8} className="text-center">
+                  Loading...
+                </TableCell>
+              </TableRow>
+            ) : (
+              bookings.map((booking) => (
+                <TableRow
+                  key={booking.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800 text-xs"
                 >
                   <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -123,7 +160,7 @@ const AdminPage = () => {
                       className={`px-2 py-1 rounded-full text-sm ${
                         booking.status === "PENDING"
                           ? "bg-yellow-100 text-yellow-800"
-                          : booking.status === "COMPLETED"
+                          : booking.status === "APPROVED"
                           ? "bg-green-100 text-green-800"
                           : booking.status === "REJECTED"
                           ? "bg-red-100 text-red-800"
@@ -158,13 +195,13 @@ const AdminPage = () => {
                 </TableRow>
               ))
             )}
-            </TableBody>
+          </TableBody>
         </Table>
 
         <div className="flex overflow-x-auto sm:justify-center">
           <Pagination
             currentPage={currentPage}
-            totalPages={100}
+            totalPages={totalPages}
             onPageChange={onPageChange}
           />
         </div>

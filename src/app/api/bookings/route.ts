@@ -1,17 +1,38 @@
 import {  NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+enum BookingStatus {
+    PENDING = 'PENDING',
+    REJECTED = 'REJECTED',
+    COMPLETED = 'COMPLETED'
+}
+
+interface BookingWhereInput {
+    status?: BookingStatus;
+    email? : {
+        contains: string;
+    };
+}
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const email = searchParams.get('email') || '';
+    const status = searchParams.get('status') || '';
     const limit = 10;
     const offset = (page - 1) * limit;
-    const where: { email?: string } = {};
-    if (email) {
-        where.email = email;
+    const where: BookingWhereInput = {};
+    if (status) {
+        if (status !== 'ALL') {
+            where.status = status as BookingStatus;
+        }
     }
+    if (email) {
+        where.email = {
+            contains: email.toLowerCase(),
+        };
+    }
+
     const bookings = await prisma.booking.findMany({
         where: where,
         include: {
