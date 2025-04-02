@@ -15,7 +15,7 @@
         {
             "id": 3,
             "icon": "BuildingStorefrontIcon",
-            "title": "Coffe Shop",
+            "title": "Coffee Shop",
             "description": "We have a coffee shop that serves a variety of coffee and snacks."
         },
         {
@@ -37,7 +37,7 @@
         },
         {
             "id": 2,
-            "title": "Coffe Shop",
+            "title": "Coffee Shop",
             "description": "Enjoy a cup of coffee while you wait for your game to start.",
             "image": "https://images.unsplash.com/photo-1536319229365-83318cdc7b83?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
