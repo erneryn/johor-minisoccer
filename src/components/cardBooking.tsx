@@ -15,19 +15,34 @@ const CardBooking = ({
           <span className="bg-blue-900 text-white text-xs font-medium px-5 py-2">
             Available
           </span>
-          {field.type === "weekend" ? (
-            <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
-              Weekend
-            </span>
-          ) : field.type === "promo" ? (
-            <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
-              Promo
-            </span>
-          ) : (
-            <span className="bg-gray-500 text-white text-xs font-medium px-5 py-2">
-              Weekday
-            </span>
-          )}
+          {(() => {
+            switch (field.type) {
+              case "weekend":
+                return (
+                  <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
+                    Weekend
+                  </span>
+                );
+              case "promo":
+                return (
+                  <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
+                    Promo
+                  </span>
+                );
+              case "holiday":
+                return (
+                  <span className="bg-red-500 text-white text-xs font-medium px-5 py-2">
+                    Holiday
+                  </span>
+                );
+              default:
+                return (
+                  <span className="bg-gray-500 text-white text-xs font-medium px-5 py-2">
+                    Weekday
+                  </span>
+                );
+            }
+          })()}
         </>
       );
     } else {

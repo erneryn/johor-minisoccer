@@ -58,6 +58,15 @@ export async function GET(request: NextRequest) {
                 }
               }
             ]
+          },
+          {
+            type: 'holiday',
+            startDate: {
+              lte: new Date(date)
+            },
+            endDate: {
+              gte: new Date(date)
+            }
           }
         ]
       },
@@ -68,7 +77,8 @@ export async function GET(request: NextRequest) {
 
     // Filter to only show promo fields if they exist
     const promoFields = fields.filter(field => field.type === 'promo');
-    const filteredFields = promoFields.length > 0 ? promoFields : fields;
+    const holidayFields = fields.filter(field => field.type === 'holiday');
+    const filteredFields = promoFields.length > 0 ? promoFields : holidayFields.length > 0 ? holidayFields : fields;
     // get booking by date
     const bookings = await prisma.booking.findMany({
       where: {

@@ -7,7 +7,7 @@ interface FieldFormData {
   name: string;
   description: string;
   price: number;
-  type: 'regular' | 'weekend' | 'promo';
+  type: 'regular' | 'weekend' | 'promo' | 'holiday';
   startDate?: string;
   endDate?: string;
   weekendPrice?: number;
@@ -216,26 +216,29 @@ const FieldModal = ({open, setOpen, onFieldAdded}: {open: boolean, setOpen: (ope
                       <option value="regular">Regular</option>
                       <option value="weekend">Weekend</option>
                       <option value="promo">Promo</option>
+                      <option value="holiday">Holiday</option>
                     </select>
                     {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type}</p>}
                   </div>
                 </div>
-                {formData.type === 'promo' && (
+                { (formData.type === 'promo' || formData.type === 'holiday') && (
                   <>
+                   {formData.type === 'promo' && (
                     <div>
-                      <div className="mb-2 block">
-                        <label htmlFor="weekendPrice" className="block mb-2 text-sm font-medium text-gray-900">Weekend Price</label>
-                        <input
-                          type="number"
-                          id="weekendPrice"
-                          value={formData.weekendPrice}
-                          onChange={handleInputChange}
-                          className={`bg-gray-50 border ${errors.weekendPrice ? 'border-red-500' : 'border-gray-300'} text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-                          required
-                        />
-                        {errors.weekendPrice && <p className="mt-1 text-sm text-red-500">{errors.weekendPrice}</p>}
-                      </div>
+                    <div className="mb-2 block">
+                      <label htmlFor="weekendPrice" className="block mb-2 text-sm font-medium text-gray-900">Weekend Price</label>
+                      <input
+                        type="number"
+                        id="weekendPrice"
+                        value={formData.weekendPrice}
+                        onChange={handleInputChange}
+                        className={`bg-gray-50 border ${errors.weekendPrice ? 'border-red-500' : 'border-gray-300'} text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
+                        required
+                      />
+                      {errors.weekendPrice && <p className="mt-1 text-sm text-red-500">{errors.weekendPrice}</p>}
                     </div>
+                    </div>
+                   )}
                     <div>
                       <div className="mb-2 block">
                         <label htmlFor="startDate" className="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
