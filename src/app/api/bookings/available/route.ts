@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     // }
     // Check if selected date is weekend
     const selectedDay = new Date(date).getDay();
-    const isWeekend = selectedDay === 0 || selectedDay === 6; // 0 is Sunday, 6 is Saturday
+    const isWeekend = selectedDay === 0 || selectedDay === 6 || selectedDay === 5; // 0 is Sunday, 5 friday, 6 is Saturday
 
     // Get all active fields
     const fields = await prisma.field.findMany({
