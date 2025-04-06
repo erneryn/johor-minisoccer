@@ -126,11 +126,11 @@ const Booking = () => {
         onClose={handleLoginModalClose}
         title="Continue Booking"
         primaryButton={{
-          label: "Login To Continue",
+          label: "Lanjutkan Booking Dengan Login",
           onClick: redirectToLogin,
         }}
         secondaryButton={{
-          label: "Continue Booking Without Login",
+          label: "Lanjutkan Booking Tanpa Login",
           onClick: redirectWithoutLogin,
         }}
       >
