@@ -64,6 +64,7 @@ const AdminPage = () => {
       date.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
+        second: "2-digit",
         hour12: false,
       })
     );
@@ -160,7 +161,7 @@ const AdminPage = () => {
                       className={`px-2 py-1 rounded-full text-sm ${
                         booking.status === "PENDING"
                           ? "bg-yellow-100 text-yellow-800"
-                          : booking.status === "APPROVED"
+                          : booking.status === "COMPLETED"
                           ? "bg-green-100 text-green-800"
                           : booking.status === "REJECTED"
                           ? "bg-red-100 text-red-800"

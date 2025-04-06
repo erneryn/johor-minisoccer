@@ -97,7 +97,7 @@ const BookingForm = () => {
           <div className="md:flex-1">
             <p className="text-sm text-gray-600 mb-1">Bank BCA</p>
             <div className="md:flex md:items-center">
-              <p className="text-lg font-mono font-bold mr-2">1234 5678 9012 3456</p>
+              <p className="text-lg font-mono font-bold mr-2">0421072425</p>
               <p className="text-gray-700">a.n. Sendang Mini Soccer</p>
             </div>
           </div>

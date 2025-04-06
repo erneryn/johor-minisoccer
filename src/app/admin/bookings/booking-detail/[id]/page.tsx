@@ -135,7 +135,8 @@ const BookingDetail = () => {
               </tr>
               <tr className="border-b">
                 <td className="py-2 px-4 font-medium">Status</td>
-                <td className="py-2 px-4">{booking?.status}</td>
+                <td className="py-2 px-4 bg-green-100 text-green-800 rounded-md"></td>
+                
               </tr>
               <tr className="border-b">
                 <td className="py-2 px-4 font-medium">Total Price</td>
