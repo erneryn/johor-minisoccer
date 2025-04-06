@@ -104,7 +104,7 @@ const BookingForm = () => {
           <button 
             className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md transition-colors duration-200 flex items-center"
             onClick={() => {
-              navigator.clipboard.writeText("1234567890123456");
+              navigator.clipboard.writeText("0421072425");
               alert("Nomor rekening berhasil disalin!");
             }}
           >

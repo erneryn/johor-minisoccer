@@ -58,7 +58,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
         ...prev,
         file: file
       }))
-
+      
       // Create preview URL
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -207,7 +207,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 accept="image/*"
                 type="file"
                 id="file"
-                capture="environment"
+                capture="user"
                 onChange={handleFileChange}
                 className="hidden"
               />
