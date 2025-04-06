@@ -187,23 +187,38 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
         </div>
 
         <div>
-          <label htmlFor="file" className="block text-sm font-medium text-gray-700">
-            Upload File 
+          <label className="block text-sm font-medium text-gray-700">
+            Upload File
           </label>
-          <input
-            required
-            accept="image/*"
-            type="file"
-            id="file"
-            capture="environment"
-            onChange={handleFileChange}
-            className="mt-1 block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-md file:border-0
-              file:text-sm file:font-semibold
-              file:bg-orange-50 file:text-orange-700
-              hover:file:bg-orange-100"
-          />
+          <div className="mt-1 flex gap-4">
+            <label className="flex-1">
+              <input
+                required
+                accept="image/*"
+                type="file"
+                id="file"
+                capture="environment"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <div className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer">
+                Open Camera
+              </div>
+            </label>
+            <label className="flex-1">
+              <input
+                required
+                accept="image/*"
+                type="file"
+                id="file"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <div className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer">
+                Choose File
+              </div>
+            </label>
+          </div>
         </div>
 
         <div className="flex justify-end">
