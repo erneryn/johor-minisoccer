@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useServerSession } from '@/hooks/useServerSession'
 import Loading from '@/components/loading'
+import Image from 'next/image'
 
 interface FormData {
   date: string
@@ -36,6 +37,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
     file: null,
     price : `${price}`,
   })
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   useEffect(() => {
     console.log(session)
@@ -51,10 +53,18 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
       setFormData(prev => ({
         ...prev,
-        file: e.target.files![0]
+        file: file
       }))
+
+      // Create preview URL
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -219,6 +229,17 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
               </div>
             </label>
           </div>
+          {imagePreview && (
+            <div className="mt-4 relative w-full h-48">
+              <Image
+                src={imagePreview}
+                alt="Preview"
+                fill
+                className="object-contain rounded-lg shadow-md"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end">
