@@ -11,6 +11,9 @@ const DesktopNav = ({session}: {session: any}) => {
         <Link href="/admin/bookings" className="text-white hover:text-orange-500">
           Bookings
         </Link>
+        <Link href="/booking" className="text-white hover:text-orange-500">
+          Create Booking
+        </Link>
         <Link href="/admin/fields" className="text-white hover:text-orange-500">
           Fields
         </Link>
