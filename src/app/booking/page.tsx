@@ -3,7 +3,7 @@ import { Field } from '@prisma/client'
 import Loading from '@/components/loading'
 import CardBooking from '@/components/cardBooking'
 // import { LoginConfirmModal } from '@/components/loginConfirmModal'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // import { useServerSession } from '@/hooks/useServerSession'
 import { useRouter } from 'next/navigation'
 
@@ -17,64 +17,20 @@ const Booking = () => {
   const [loadingField, setLoadingField ] = useState(false)
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isAndroid, setIsAndroid] = useState(false);
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    
-    // Check if device is mobile
-    const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-    setIsMobile(mobile);
-    
-    // Check if device is iOS
-    const ios = /iphone|ipad|ipod/i.test(userAgent.toLowerCase());
-    setIsIOS(ios);
-    
-    // Check if device is Android
-    const android = /android/i.test(userAgent.toLowerCase());
-    setIsAndroid(android);
-
-    console.log('Device Info:', {
-      userAgent,
-      isMobile,
-      isIOS,
-      isAndroid
-    });
-  }, []);
 
   const getAvailableFields = async () => {
     setAvailableFields([]);
     setError(null);
     try { 
-      setLoadingField(true);
-      
-      // Use different API URL construction for mobile devices
-      const apiUrl = isMobile 
-        ? `${window.location.origin}/api/bookings/available?date=${selectedDate}`
-        : `/api/bookings/available?date=${selectedDate}`;
-      
-      console.log('Fetching from:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-        cache: 'no-cache'
-      });
-      
+      setLoadingField(true)
+      const response = await fetch(`/api/bookings/available?date=${selectedDate}`);
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('API Error:', errorData);
         setError(errorData.error || 'Failed to fetch fields');
-        setLoadingField(false);
-        return;
+        return new Error(errorData.error || 'Failed to fetch fields');
       }
-      
       const data = await response.json();
-      console.log('API Response:', data);
+      console.log('API Response:', data); // Debug log
       setAvailableFields(data.fields);
     } catch (error) {
       console.error('Fetch Error:', error);
