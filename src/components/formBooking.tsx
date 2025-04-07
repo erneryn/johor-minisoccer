@@ -110,6 +110,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
         formDataToSend.append('fieldId', fieldId)
       }
 
+
       const response = await fetch('/api/bookings/submit', {
         method: 'POST',
         body: formDataToSend

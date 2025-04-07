@@ -47,12 +47,20 @@ const BookingForm = () => {
   const generateTotalPrice = (field: Field, selectedDate: string) => {
     const date = new Date(selectedDate)
     const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
-    if(isWeekend && field.weekendPrice) {
+    if(isWeekend && field.weekendPrice && field.type === 'promo') {
       return `Rp ${field.weekendPrice.toLocaleString()} (Weekend)`
     }
     return `Rp ${field.price.toLocaleString()}`
   }
 
+  const getPrice = (field: Field, selectedDate: string) => {
+    const date = new Date(selectedDate)
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
+    if(isWeekend && field.weekendPrice && field.type === 'promo') {
+      return field.weekendPrice
+    }
+    return field.price
+  }
   const onSuccesSubmit = () => {
     setModalSubmitting(false)
     setModalSuccess(true)
@@ -131,7 +139,7 @@ const BookingForm = () => {
       </div>
 
       <FormBooking fieldId={id} selectedDate={selectedDate} hour={field?.description || '' }
-      onSuccesSubmit={onSuccesSubmit} price={field.price} onSubmmiting={onSubmmiting} onErrorSubmit={onErrorSubmit}/>
+      onSuccesSubmit={onSuccesSubmit} price={getPrice(field,selectedDate)} onSubmmiting={onSubmmiting} onErrorSubmit={onErrorSubmit}/>
       {modalSuccess && <SuccessModal/>}
       {modalSubmmiting && <LoadingModal/>}
       {modalError && <ErrorModal onClose={() => setModalError(false) }/>}

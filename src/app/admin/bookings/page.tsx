@@ -187,7 +187,7 @@ const AdminPage = () => {
                   </TableCell>
                   <TableCell>
                     <Link
-                      href={`/admin/booking-detail/${booking.id}`}
+                      href={`/admin/bookings/booking-detail/${booking.id}`}
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >
                       Lihat Detail

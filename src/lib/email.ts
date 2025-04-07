@@ -21,7 +21,7 @@ export async function sendConfirmationEmail(booking: Booking, date: string, hour
     hour,
     club_name: booking.clubName,
     mobile_number: booking.phoneNumber,
-    price: booking.totalPrice
+    price: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
   });
 
   const transporter = nodemailer.createTransport({
@@ -52,7 +52,7 @@ export async function sendSuccesOrRejectEmail(booking: Booking, date: string, st
       hour: booking.fieldDescription,
       club_name: booking.clubName,
       mobile_number: booking.phoneNumber,
-      price: booking.totalPrice
+      price: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
     });
   
     const transporter = nodemailer.createTransport({

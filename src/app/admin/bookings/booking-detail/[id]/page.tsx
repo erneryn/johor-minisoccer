@@ -17,6 +17,7 @@ const BookingDetail = () => {
   const [booking, setBooking] = useState<BookingWithField | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [isRejected, setIsRejected] = useState(false);
 	const [isError, setIsError] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 	const formatDate = (date: Date, type: 'date' | 'datetime') => {
@@ -35,20 +36,22 @@ const BookingDetail = () => {
 		}) + ', ' + date.toLocaleTimeString('en-US', {
 				hour: '2-digit',
 				minute: '2-digit',
+				second: '2-digit',
 				hour12: false
 		});
 	}
 
-	const approveBooking = async () => {
+	const handleActionBooking = async (status: string) => {
 		try {
 			setIsError(false);
-			setIsSubmitted(true);
+			setIsSubmitted(status == 'COMPLETED');
+      setIsRejected(status == 'REJECTED');
 			const response = await fetch(`/api/bookings/${id}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ status: 'COMPLETED'})
+				body: JSON.stringify({ status: status})
 			})
 			const data = await response.json();
 			setBooking(data);
@@ -59,6 +62,7 @@ const BookingDetail = () => {
 			setIsError(true);
 		} finally {
 			setIsSubmitted(false);
+      setIsRejected(false);
 		}
 	}
   useEffect(() => {
@@ -80,9 +84,9 @@ const BookingDetail = () => {
     <div className="relative container mx-auto px-4 sm:px-6 md:px-8 sm:w-4/5 space-y-8 py-12">
 			{isSuccess && <Toast className="absolute top-0 left-2 sm:w-1/4 w-full flex justify-between items-center">
         <div className="inline-flex shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-          <HiCheck className="h-5 w-5" />
+          <HiCheck className="h-5 w-5" /> 
         </div>
-        <div className="ml-3 text-sm font-normal">Successfully approved booking.</div>
+        <div className="ml-3 text-sm font-normal">Successfully modified booking.</div>
         <ToastToggle className="m-0" onDismiss={() => setIsSuccess(false) }  />
       </Toast>}
 			{
@@ -95,8 +99,8 @@ const BookingDetail = () => {
 				</Toast>
 			}
 			<div>
-				<Link href="/admis" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md inline-flex items-center">
-					<span>← Backs</span>
+				<Link href="/admin/bookings" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md inline-flex items-center">
+					<span>← Back</span>
 				</Link>
 			</div>
 			{loading ? <Loading /> : (
@@ -107,10 +111,10 @@ const BookingDetail = () => {
           </h1>
         </div>
         <div className="w-full p-4 flex justify-end gap-4">
-         {booking && booking.status == 'PENDING' ? (<><button className="bg-gray-500 text-white px-4 py-2 rounded-md">
-            Reject
+         {booking && booking.status == 'PENDING' ? (<><button onClick={() => handleActionBooking('REJECTED')} disabled={isRejected || isSubmitted} className="bg-gray-500 text-white px-4 py-2 rounded-md">
+            {isRejected ? 'Rejected...' : 'Reject'}
           </button>
-          <button onClick={approveBooking} disabled={isSubmitted} className="bg-orange-500 text-white px-4 py-2 rounded-md">
+          <button onClick={() => handleActionBooking('COMPLETED')} disabled={isSubmitted || isRejected} className="bg-orange-500 text-white px-4 py-2 rounded-md">
             {isSubmitted ? 'Submitting...' : 'Approve'}
           </button></>): (<></>)}
         </div>
@@ -145,7 +149,10 @@ const BookingDetail = () => {
                           ? "bg-red-100 text-red-800"
                           : "bg-gray-100 text-gray-800"
                       }`}>{booking?.status}</span></td>
-                  <td className="py-2 px-4">{booking?.totalPrice}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2 px-4 font-medium">Total Price</td>
+                <td className="py-2 px-4">{booking?.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
               </tr>
               <tr className="border-b">
                 <td className="py-2 px-4 font-medium">Booking For</td>
