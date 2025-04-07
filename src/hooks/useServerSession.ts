@@ -13,10 +13,11 @@ interface Session {
 
 export function useServerSession() {
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchSession = async () => {
+      setLoading(true)
       try {
         const response = await fetch('/api/auth/session')
         if (!response.ok) {
@@ -30,7 +31,6 @@ export function useServerSession() {
         setLoading(false)
       }
     }
-
     fetchSession()
   }, [])
 

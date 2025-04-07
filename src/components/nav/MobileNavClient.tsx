@@ -11,6 +11,9 @@ const MobileNavClient = ({session}: {session: any}) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="text-white focus:outline-none"
+        style={
+          {backgroundColor: '#081521'}
+        }
       >
         <svg
           className="h-8 w-8"

@@ -37,7 +37,7 @@ const Booking = () => {
       setLoadingField(false)
     }
   }
-  console.log(error)
+
   const handleBooking = (fieldId: string) => {
     if (!session) {
       setFieldId(fieldId);
@@ -62,7 +62,7 @@ const Booking = () => {
   }
 
   if (loading) {
-    return <Loading />
+   return <Loading />
   }
 
   return (
