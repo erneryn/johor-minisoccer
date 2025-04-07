@@ -227,7 +227,20 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
               type="file"
               id="file"
               onChange={handleFileChange}
-            />) : <div className='w-full flex flex-col gap-4'>
+            />) : <div className='w-full flex flex-row gap-2 p-0'>
+              <input
+                type="file"
+                id="file"
+                className="hidden"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <button 
+                className='w-full text-xs px-2 bg-orange-500 hover:bg-orange-600 text-white font-medium py-1  rounded-lg transition-colors duration-200 active:bg-orange-700 flex items-center justify-center '
+                onClick={() => document.getElementById('file')?.click()}
+              >
+                Select Image
+              </button>
               <input
                 type="file"
                 id="fileCamera"
@@ -237,13 +250,13 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 accept="image/*"
               />
               <button 
-                className='w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 active:bg-orange-700 flex items-center justify-center gap-2'
+                className='w-full text-xs px-2 bg-orange-500 hover:bg-orange-600 text-white font-medium py-1 rounded-lg transition-colors duration-200 active:bg-orange-700 flex items-center justify-center '
                 onClick={() => document.getElementById('fileCamera')?.click()}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                 </svg>
-                 Select Image
+                Take Photo
               </button>
             </div>
           }
