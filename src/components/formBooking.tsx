@@ -31,6 +31,7 @@ interface FormErrors {
 
 const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubmmiting , onErrorSubmit}: FormBookingProps) => {
   const { session, loading } = useServerSession()
+
   const [formData, setFormData] = useState<FormData>({
     date: selectedDate || new Date().toISOString().split('T')[0],
     hour: hour,
@@ -42,9 +43,12 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
     price : `${price}`,
   })
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
-    console.log(session)
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isIOS = /iPad|iPhone/.test(userAgent) && !(window as any).MSStream;
+    setIsIOS(isIOS)
     setFormData(prev => ({
       ...prev,
       email: session?.user?.email || '',
@@ -214,7 +218,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Upload File
+            Bukti Pembayaran
           </label>
           <div className="mt-1 flex gap-4">
             <label className="flex-1">
@@ -222,31 +226,9 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 accept="image/*"
                 type="file"
                 id="fileCamera"
-                capture="environment"
                 onChange={handleFileChange}
-                className="hidden"
+                capture={!isIOS ? "environment" : undefined}
               />
-              <div 
-                onClick={() => document.getElementById('fileCamera')?.click()}
-                className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer"
-              >
-                Open Camera
-              </div>
-            </label>
-            <label className="flex-1">
-              <input
-                accept="image/*"
-                type="file"
-                id="file"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-              <div 
-                onClick={() => document.getElementById('file')?.click()}
-                className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer"
-              >
-                Choose File
-              </div>
             </label>
           </div>
           {formValid.file && (
