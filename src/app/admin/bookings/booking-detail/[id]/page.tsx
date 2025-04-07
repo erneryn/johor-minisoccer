@@ -135,12 +135,17 @@ const BookingDetail = () => {
               </tr>
               <tr className="border-b">
                 <td className="py-2 px-4 font-medium">Status</td>
-                <td className="py-2 px-4 bg-green-100 text-green-800 rounded-md"></td>
-                
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Total Price</td>
-                <td className="py-2 px-4">{booking?.totalPrice}</td>
+                <td className="py-2 px-4"> <span
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        booking?.status === "PENDING"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : booking?.status === "COMPLETED"
+                          ? "bg-green-100 text-green-800"
+                          : booking?.status === "REJECTED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}>{booking?.status}</span></td>
+                  <td className="py-2 px-4">{booking?.totalPrice}</td>
               </tr>
               <tr className="border-b">
                 <td className="py-2 px-4 font-medium">Booking For</td>

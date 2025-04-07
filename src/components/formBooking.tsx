@@ -25,6 +25,10 @@ interface FormBookingProps {
   price: number
 }
 
+interface FormErrors {
+  file?: string
+}
+
 const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubmmiting , onErrorSubmit}: FormBookingProps) => {
   const { session, loading } = useServerSession()
   const [formData, setFormData] = useState<FormData>({
@@ -50,6 +54,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [formValid, setFormValid] = useState<FormErrors>({})
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,8 +73,19 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
     }
   }
 
+  const validateForm = () => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.file) {
+      newErrors.file = 'Lampirkan bukti pembayaran'
+    }
+    setFormValid(newErrors)
+    return Object.keys(newErrors).length === 0;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validateForm()) return;
     setIsSubmitting(true)
     setError('')
     onSubmmiting()
@@ -203,7 +219,6 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
           <div className="mt-1 flex gap-4">
             <label className="flex-1">
               <input
-                required
                 accept="image/*"
                 type="file"
                 id="file"
@@ -217,7 +232,6 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
             </label>
             <label className="flex-1">
               <input
-                required
                 accept="image/*"
                 type="file"
                 id="file"
@@ -229,6 +243,9 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
               </div>
             </label>
           </div>
+          {formValid.file && (
+            <div className="text-red-500 text-sm">Lampirkan bukti pembayaran</div>
+          )}  
           {imagePreview && (
             <div className="mt-4 relative w-full h-48">
               <Image
