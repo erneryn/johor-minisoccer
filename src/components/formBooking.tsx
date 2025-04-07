@@ -222,11 +222,13 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 accept="image/*"
                 type="file"
                 id="file"
-                capture="user"
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <div className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer">
+              <div 
+                onClick={() => document.getElementById('file')?.click()}
+                className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer"
+              >
                 Open Camera
               </div>
             </label>
@@ -238,7 +240,10 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <div className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer">
+              <div 
+                onClick={() => document.getElementById('file')?.click()}
+                className="w-full p-2 text-center rounded-md border-2 border-orange-500 text-orange-500 hover:bg-orange-50 cursor-pointer"
+              >
                 Choose File
               </div>
             </label>

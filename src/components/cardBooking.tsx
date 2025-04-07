@@ -5,7 +5,7 @@ const CardBooking = ({
   handleBooking }: {
     field: Field & { isAvailable: boolean },
     selectedDate: string,
-    handleBooking: () => void
+    handleBooking: (fieldId: string) => void
   }) => {
 
   const Tag = ({field}: {field: Field & { isAvailable: boolean, type: string }}) => {
@@ -66,7 +66,7 @@ const CardBooking = ({
             field.isAvailable && (
               <button
                 className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300"
-                onClick={handleBooking}
+                onClick={() => handleBooking(field.id)}
               >
                 Select
               </button>

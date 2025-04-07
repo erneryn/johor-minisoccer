@@ -2,18 +2,18 @@
 import { Field } from '@prisma/client'
 import Loading from '@/components/loading'
 import CardBooking from '@/components/cardBooking'
-import { LoginConfirmModal } from '@/components/loginConfirmModal'
+// import { LoginConfirmModal } from '@/components/loginConfirmModal'
 import { useState } from 'react'
-import { useServerSession } from '@/hooks/useServerSession'
+// import { useServerSession } from '@/hooks/useServerSession'
 import { useRouter } from 'next/navigation'
 
 
 const Booking = () => {
-  const { session, loading } = useServerSession()
+  // const { session, loading } = useServerSession()
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [availableFields, setAvailableFields] = useState([]);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [fieldId, setFieldId] = useState('');
+  // const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // const [fieldId, setFieldId] = useState('');
   const [loadingField, setLoadingField ] = useState(false)
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -30,40 +30,45 @@ const Booking = () => {
         return new Error(errorData.error || 'Failed to fetch fields');
       }
       const data = await response.json();
+      console.log('API Response:', data); // Debug log
       setAvailableFields(data.fields);
     } catch (error) {
-      console.log(error)
+      console.error('Fetch Error:', error);
+      setError('Network error. Please check your connection and try again.');
     } finally {
-      setLoadingField(false)
+      setLoadingField(false);
     }
   }
+
 
   const handleBooking = (fieldId: string) => {
-    if (!session) {
-      setFieldId(fieldId);
-      setIsLoginModalOpen(true);
-    } else {
-      router.push(`/booking/form?id=${fieldId}&selectedDate=${selectedDate}`);
-    }
-  }
-
-  const handleLoginModalClose = () => {
-    setIsLoginModalOpen(false);
-  }
-
-  const redirectToLogin = () => {
-    const redirectUrl = `/booking/form?id=${fieldId}&selectedDate=${selectedDate}`;
-    const encodedRedirect = encodeURIComponent(redirectUrl);
-    router.push('/login?redirect=' + encodedRedirect);
-  }
-
-  const redirectWithoutLogin = () => {
     router.push(`/booking/form?id=${fieldId}&selectedDate=${selectedDate}`);
+
+    // if (!session) {
+    //   setFieldId(fieldId);
+    //  setIsLoginModalOpen(true);
+    // } else {
+    //   router.push(`/booking/form?id=${fieldId}&selectedDate=${selectedDate}`);
+    // }
   }
 
-  if (loading) {
-   return <Loading />
-  }
+  // const handleLoginModalClose = () => {
+  //     setIsLoginModalOpen(false);
+  // }
+
+  // const redirectToLogin = () => {
+  //   const redirectUrl = `/booking/form?id=${fieldId}&selectedDate=${selectedDate}`;
+  //   const encodedRedirect = encodeURIComponent(redirectUrl);
+  //   router.push('/login?redirect=' + encodedRedirect);
+  // }
+
+  // const redirectWithoutLogin = () => {
+  //   router.push(`/booking/form?id=${fieldId}&selectedDate=${selectedDate}`);
+  // }
+
+  // if (loading) {
+  //  return <Loading />
+  // }
 
   return (
     <div className="container mx-auto px-4 sm:px-6 md:px-8 sm:w-4/5 space-y-8 py-12">
@@ -89,11 +94,19 @@ const Booking = () => {
 
               <div className="flex justify-center mt-8">
                 <button
+                  type="button"
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg disabled:opacity-50 active:bg-orange-700 transition-colors duration-200"
+                  onClick={() => {
+                    getAvailableFields();
+                  }}
+                  onTouchEnd={(e) => {
+                    e.preventDefault(); 
+                    getAvailableFields();
+                  }}
                   disabled={loadingField}
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 disabled:opacity-50"
-                  onClick={getAvailableFields}
+                  aria-label="Check field availability"
                 >
-                  Check Availability
+                  {loadingField ? 'Checking...' : 'Check Availability'}
                 </button>
               </div>
             </div>
@@ -114,14 +127,14 @@ const Booking = () => {
                 key={field.id}
                 field={field}
                 selectedDate={selectedDate}
-                handleBooking={() => handleBooking(field.id)}
+                handleBooking={handleBooking}
               />
             ))}
           </div>
         </div>
       )}
 
-      <LoginConfirmModal
+      {/* <LoginConfirmModal
         isOpen={isLoginModalOpen}
         onClose={handleLoginModalClose}
         title="Continue Booking"
@@ -137,7 +150,7 @@ const Booking = () => {
         <p className="text-gray-600 dark:text-gray-300">
           you are not logged in, but you can continue booking without logging in
         </p>
-      </LoginConfirmModal>
+      </LoginConfirmModal> */}
     </div>
   );
 }
