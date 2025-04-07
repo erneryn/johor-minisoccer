@@ -44,6 +44,15 @@ const BookingForm = () => {
     fetchBookingData();
   }, [id, selectedDate]);
 
+  const generateTotalPrice = (field: Field, selectedDate: string) => {
+    const date = new Date(selectedDate)
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
+    if(isWeekend && field.weekendPrice) {
+      return `Rp ${field.weekendPrice.toLocaleString()} (Weekend)`
+    }
+    return `Rp ${field.price.toLocaleString()}`
+  }
+
   const onSuccesSubmit = () => {
     setModalSubmitting(false)
     setModalSuccess(true)
@@ -88,7 +97,7 @@ const BookingForm = () => {
             <div className="sm:flex sm:justify-between sm:items-center mb-10">
               <p className="text-sm text-gray-600 mb-1">Tanggal: {new Date(selectedDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               <p className="text-sm text-gray-600 mb-1">Jam: {field.description}</p>
-              <p className="text-sm text-gray-600 mb-1">Total: Rp {field.price.toLocaleString()}</p>
+              <p className="text-sm text-gray-600 mb-1">Total: {generateTotalPrice(field, selectedDate)}</p>
             </div>
           )
         }
