@@ -222,6 +222,7 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
                 accept="image/*"
                 type="file"
                 id="fileCamera"
+                capture="environment"
                 onChange={handleFileChange}
                 className="hidden"
               />
