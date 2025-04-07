@@ -220,17 +220,36 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
           <label className="block text-sm font-medium text-gray-700">
             Bukti Pembayaran
           </label>
-          <div className="mt-1 flex gap-4">
-            <label className="flex-1">
+          {
+            isIOS ? (<input
+              className='w-full'
+              accept="image/*"
+              type="file"
+              id="file"
+              onChange={handleFileChange}
+            />) : <div className='w-full flex flex-col gap-2'>
               <input
-                accept="image/*"
                 type="file"
                 id="fileCamera"
+                className="hidden"
                 onChange={handleFileChange}
-                capture={!isIOS ? "environment" : undefined}
+                capture="environment"
               />
-            </label>
-          </div>
+              <button className='w-full' onClick={() => document.getElementById('fileCamera')?.click()}>
+                Open Camera
+              </button>
+              <input
+                type="file"
+                id="file"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <button className='w-full' onClick={() => document.getElementById('file')?.click()}>
+                Choose File
+              </button>
+            </div>
+          }
+              
           {formValid.file && (
             <div className="text-red-500 text-sm">Lampirkan bukti pembayaran</div>
           )}  
