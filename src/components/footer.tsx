@@ -25,7 +25,7 @@ const Footer = async () => {
                   <h3 className="text-3xl font-bold">Contact Us</h3>
                   <ul className="mt-2 space-y-2">
                     <li><Link href="https://wa.me/6281375122134" className="hover:text-orange-500 flex items-center">
-                      <PhoneIcon className="h-7 w-7 mr-5" /> Whatssap: 6281375122134</Link></li>
+                      <PhoneIcon className="h-7 w-7 mr-5" /> Whatssap: 0818‑560‑056</Link></li>
                     <li>
                       <Link href="https://g.co/kgs/ujMiDx3" className="hover:text-orange-500 flex items-center">
                       <MapPinIcon className="h-11 w-11 mr-5" /> 
