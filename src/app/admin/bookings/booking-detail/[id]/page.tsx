@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiExclamation } from "react-icons/hi";
+import { PDFDownloadButton } from "@/components/PDFDownloadButton";
 
 
 const BookingDetail = () => {
@@ -117,6 +118,7 @@ const BookingDetail = () => {
           <button onClick={() => handleActionBooking('COMPLETED')} disabled={isSubmitted || isRejected} className="bg-orange-500 text-white px-4 py-2 rounded-md">
             {isSubmitted ? 'Submitting...' : 'Approve'}
           </button></>): (<></>)}
+          {booking && <PDFDownloadButton booking={booking} />}
         </div>
 				<div className="">
           <table className="w-full">
@@ -126,15 +128,15 @@ const BookingDetail = () => {
                 <td className="py-2 px-4">{booking?.email}</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Phone Number</td>
+                <td className="py-2 px-4 font-medium">No Hp</td>
                 <td className="py-2 px-4">{booking?.phoneNumber}</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Club Name</td>
+                <td className="py-2 px-4 font-medium">Nama Club</td>
                 <td className="py-2 px-4">{booking?.clubName}</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Field</td>
+                <td className="py-2 px-4 font-medium">Jam Main</td>
                 <td className="py-2 px-4">{booking?.fieldDescription}</td>
               </tr>
               <tr className="border-b">
@@ -150,17 +152,30 @@ const BookingDetail = () => {
                           : "bg-gray-100 text-gray-800"
                       }`}>{booking?.status}</span></td>
               </tr>
+             
               <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Total Price</td>
-                <td className="py-2 px-4">{booking?.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Booking For</td>
+                <td className="py-2 px-4 font-medium">Booking Untuk Tanggal</td>
                 <td className="py-2 px-4">{booking?.bookingForDate && formatDate(booking.bookingForDate, 'date')}</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Submitted At</td>
+                <td className="py-2 px-4 font-medium">Booking Dibuat Pada Tanggal</td>
                 <td className="py-2 px-4">{booking?.bookingSubmittedAt && formatDate(booking.bookingSubmittedAt, 'datetime')}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2 px-4 font-medium">Harga Lapangan</td>
+                <td className="py-2 px-4">{booking?.fieldPrice?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2 px-4 font-medium">Wasit Price</td>
+                <td className="py-2 px-4">{booking?.wasitPrice ? booking?.wasitPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)'}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2 px-4 font-medium">Photographer Price</td>
+                <td className="py-2 px-4">{booking?.photographerPrice ? booking?.photographerPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)'}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2 px-4 font-medium">Total Price</td>
+                <td className="py-2 px-4">{booking?.totalPrice?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
               </tr>
               <tr>
                 <td className="py-2 px-4 font-medium">Payment Proof</td>

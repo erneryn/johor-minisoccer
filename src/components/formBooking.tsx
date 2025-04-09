@@ -12,24 +12,38 @@ interface FormData {
   clubName: string
   file: File | null
   userId: string
-  price: string
+  fieldPrice: string
+  useWasit: string
+  usePhotographer: string
 }
 
 interface FormBookingProps {
   fieldId: string
   selectedDate: string
   hour: string
+  useWasit: 'ya' | 'tidak'
+  usePhotographer: 'ya' | 'tidak'
+  fieldPrice: number
   onSuccesSubmit: () => void
   onSubmmiting: () => void
   onErrorSubmit: () => void
-  price: number
 }
 
 interface FormErrors {
   file?: string
 }
 
-const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubmmiting , onErrorSubmit}: FormBookingProps) => {
+const FormBooking: React.FC<FormBookingProps> = ({
+  fieldId,
+  selectedDate,
+  hour,
+  useWasit,
+  usePhotographer,
+  fieldPrice,
+  onSuccesSubmit,
+  onSubmmiting,
+  onErrorSubmit
+}) => {
   const { session, loading } = useServerSession()
 
   const [formData, setFormData] = useState<FormData>({
@@ -40,10 +54,20 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
     phoneNumber: '',
     clubName: '',
     file: null,
-    price : `${price}`,
+    fieldPrice : `${fieldPrice}`,
+    useWasit: useWasit === 'ya' ? 'ya' : 'tidak',
+    usePhotographer: usePhotographer === 'ya' ? 'ya' : 'tidak'
   })
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [isIOS, setIsIOS] = useState(false)
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      useWasit: useWasit === 'ya' ? 'ya' : 'tidak',
+      usePhotographer: usePhotographer === 'ya' ? 'ya' : 'tidak'
+    }))
+  },[useWasit,usePhotographer])
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -95,6 +119,9 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
     onSubmmiting()
 
     try {
+      const wasitPrice = formData.useWasit === 'ya' ? 150000 : 0
+      const photographerPrice = formData.usePhotographer === 'ya' ? 350000 : 0
+      const totalPrice = fieldPrice + wasitPrice + photographerPrice
       const formDataToSend = new FormData()
       formDataToSend.append('date', formData.date)
       formDataToSend.append('hour', formData.hour)
@@ -102,7 +129,9 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
       formDataToSend.append('phoneNumber', formData.phoneNumber)
       formDataToSend.append('clubName', formData.clubName)
       formDataToSend.append('userId', formData.userId)
-      formDataToSend.append('price', formData.price)
+      formDataToSend.append('totalPrice', `${totalPrice}`)
+      formDataToSend.append('wasitPrice', `${wasitPrice}`)
+      formDataToSend.append('photographerPrice', `${photographerPrice}`)
       if (formData.file) {
         formDataToSend.append('file', formData.file)
       }
@@ -122,9 +151,9 @@ const FormBooking = ({fieldId, selectedDate, hour, onSuccesSubmit, price, onSubm
 
       onSuccesSubmit()
     } catch (err) {
+      console.error('Error submitting form:', err)
       onErrorSubmit()
       setError('Failed to submit booking. Please try again.')
-      throw err
     } finally {
       setIsSubmitting(false)
     }

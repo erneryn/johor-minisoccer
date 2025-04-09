@@ -58,5 +58,14 @@
             "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1743481978/s5d32x86bvsnhkawqdcp.jpg",
             "badge": "Promo"
         }
+    ],
+    "partner": [
+        {
+            "id": 1,
+            "title": "Sport Photography",
+            "mainTitle":"LensaKoe",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1744218226/fdkkk62fiehxqr7gbnk7.png"
+        }
     ]
 }

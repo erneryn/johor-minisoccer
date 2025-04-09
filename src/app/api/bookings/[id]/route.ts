@@ -18,7 +18,6 @@ export async function GET(_: NextRequest,
     if (!booking) {
         return NextResponse.json({ error: "Booking not found" }, { status: 404 })
     }
-
     const response = {
         id: booking.id,
         email: booking.email,
@@ -29,6 +28,9 @@ export async function GET(_: NextRequest,
         fileUrl: booking.fileUrl,
         status: booking.status,
         totalPrice: booking.totalPrice,
+        fieldPrice: booking.field.price,
+        wasitPrice: booking.wasitPrice,
+        photographerPrice: booking.photographerPrice,
         bookingSubmittedAt: booking.createdAt,
         bookingForDate: booking.startTime
     }
@@ -63,9 +65,13 @@ export async function POST(request: NextRequest,  { params }: { params: Promise<
             fileUrl: booking.fileUrl,
             status: booking.status,
             totalPrice: booking.totalPrice,
+            wasitPrice: booking.wasitPrice,
+            fieldPrice: booking.field.price,
+            photographerPrice: booking.photographerPrice,
             bookingSubmittedAt: booking.createdAt,
             bookingForDate: booking.startTime
         };
+
 
         const emailData = {
             id: booking.id,
@@ -73,10 +79,16 @@ export async function POST(request: NextRequest,  { params }: { params: Promise<
             clubName: booking.clubName,
             phoneNumber: booking.phoneNumber,
             totalPrice: booking.totalPrice,
-            fieldDescription: booking.field.description || 'No description available'
+            fieldDescription: booking.field.description || 'No description available',
+            wasitPrice: booking.wasitPrice,
+            photographerPrice: booking.photographerPrice,
+            fieldPrice: booking.field.price
         }
-
-        await sendSuccesOrRejectEmail(emailData, booking.startTime.toISOString(), body.status);
+        try {
+            await sendSuccesOrRejectEmail(emailData, booking.startTime.toISOString(), body.status);
+        } catch (error) {
+            console.error('Error sending email:', error);
+        }
 
         return NextResponse.json(response);
     } catch (error) {

@@ -92,6 +92,8 @@ model Booking {
   fileUrl     String?
   status     BookingStatus @default(PENDING)
   totalPrice Float
+  wasitPrice Float?
+  photographerPrice Float?
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
   field      Field         @relation(fields: [fieldId], references: [id])

@@ -50,8 +50,8 @@ export default function Card({mainTitle, title, description, buttonText, buttonL
       {/* <div className="absolute inset-0 bg-black/50"></div> */}
       <div className="p-6 absolute left-0  right-0 bottom-0 z-10">
         {mainTitle && <h3 className="text-2xl font-bold text-orange-500 mb-2">{mainTitle}</h3>}
-        <h3 className="text-3xl font-bold text-white mb-2">{title}</h3>
-        <p className="text-gray-300 mb-4">{description}</p>
+        <h3 className="text-3xl font-bold text-white mb-2  bg-gray-400 bg-opacity-50 p-2 rounded-lg w-fit">{title}</h3>
+        <p className="text-gray-300 mb-4 shadow-xl">{description}</p>
         {buttonLink && buttonText && <MainButton text={buttonText} link={buttonLink} />}
       </div>
     </div>

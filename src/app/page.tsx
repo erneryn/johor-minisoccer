@@ -4,7 +4,7 @@ import FeatureList from '@/components/FeatureList';
 import Card from "@/components/card";
 import { cards } from "@/app/config";
 import Promotion from "@/components/promotion";
-
+import Advertising from "@/components/advertising";
 export default async function Home() {
   return (
    <div className="max-w-screen-xl mx-auto py-6 p-4 ">
@@ -22,6 +22,7 @@ export default async function Home() {
       image={card.image} />
     ))}
     <Promotion />
+    <Advertising />
    </div>
   );
 }

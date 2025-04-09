@@ -9,6 +9,9 @@ interface Booking {
   phoneNumber: string;
   totalPrice: number;
   fieldDescription?: string;
+  fieldPrice: number;
+  wasitPrice: number | null;
+  photographerPrice: number | null;
 }
 
 export async function sendConfirmationEmail(booking: Booking, date: string, hour: string) {
@@ -21,7 +24,10 @@ export async function sendConfirmationEmail(booking: Booking, date: string, hour
     hour,
     club_name: booking.clubName,
     mobile_number: booking.phoneNumber,
-    price: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    price: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }),
+    wasitPrice: booking.wasitPrice ? booking.wasitPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)',
+    photographerPrice: booking.photographerPrice ? booking.photographerPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)',
+    totalPrice: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
   });
 
   const transporter = nodemailer.createTransport({
@@ -29,16 +35,25 @@ export async function sendConfirmationEmail(booking: Booking, date: string, hour
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD
+    },
+    secure: true,
+    tls: {
+      rejectUnauthorized: false
     }
   });
 
-  return transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: booking.email,
-    cc: 'johorminisoccer2025@gmail.com',
-    subject: 'Booking Confirmation',
-    html: content
-  });
+  try {
+    return await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: booking.email,
+      cc: 'johorminisoccer2025@gmail.com',
+      subject: 'Booking Confirmation',
+      html: content
+    });
+  } catch (error) {
+    console.error('Email sending error:', error);
+    throw new Error('Failed to send confirmation email');
+  }
 } 
 
 export async function sendSuccesOrRejectEmail(booking: Booking, date: string, status: string) {
@@ -52,7 +67,10 @@ export async function sendSuccesOrRejectEmail(booking: Booking, date: string, st
       hour: booking.fieldDescription,
       club_name: booking.clubName,
       mobile_number: booking.phoneNumber,
-      price: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+      fieldPrice: booking.fieldPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }),
+      wasitPrice: booking.wasitPrice ? booking.wasitPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)',
+      photographerPrice: booking.photographerPrice ? booking.photographerPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)',
+      totalPrice: booking.totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
     });
   
     const transporter = nodemailer.createTransport({
@@ -62,12 +80,17 @@ export async function sendSuccesOrRejectEmail(booking: Booking, date: string, st
         pass: process.env.EMAIL_PASSWORD
       }
     });
-  
-    return transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: booking.email,
-      cc: 'johorminisoccer2025@gmail.com',
-      subject: status == 'COMPLETED' ? 'Booking Success' : 'Booking Rejected',
-      html: content
-    });
+    
+    try {
+      return await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: booking.email,
+        cc: 'johorminisoccer2025@gmail.com',
+        subject: status == 'COMPLETED' ? 'Booking Success' : 'Booking Rejected',
+        html: content
+      });
+    } catch (error) {
+      console.error('Email sending error:', error);
+      throw new Error('Failed to send confirmation email');
+    }
   } 

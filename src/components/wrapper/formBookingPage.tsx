@@ -9,6 +9,7 @@ import SuccessModal from "@/components/successModal";
 import ErrorModal from '@/components/errorModal'
 import LoadingModal from "../loadingModal";
 
+
 const BookingForm = () => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
@@ -19,8 +20,9 @@ const BookingForm = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false)
   const [modalSubmmiting, setModalSubmitting] = useState(false)
+  const [isAddWasit, setIsAddWasit] = useState<'tidak' | 'ya'>('tidak')
+  const [isAddPhotographer, setIsAddPhotographer] = useState<'tidak' | 'ya'>('tidak')
   const router = useRouter();
-
 
   useEffect(() => {
     console.log(selectedDate && new Date(selectedDate))
@@ -44,22 +46,29 @@ const BookingForm = () => {
     fetchBookingData();
   }, [id, selectedDate]);
 
-  const generateTotalPrice = (field: Field, selectedDate: string) => {
+  const generateFieldPrice = (field: Field, selectedDate: string) => {
     const date = new Date(selectedDate)
     const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
     if(isWeekend && field.weekendPrice && field.type === 'promo') {
-      return `Rp ${field.weekendPrice.toLocaleString()} (Weekend)`
+      return   `Rp ${field.weekendPrice.toLocaleString()} (Weekend)`
     }
     return `Rp ${field.price.toLocaleString()}`
   }
 
-  const getPrice = (field: Field, selectedDate: string) => {
+  const getFieldPrice = (field: Field, selectedDate: string) => {
     const date = new Date(selectedDate)
     const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
     if(isWeekend && field.weekendPrice && field.type === 'promo') {
       return field.weekendPrice
     }
     return field.price
+  }
+  const generateGrandTotal = (field: Field, selectedDate: string) => {
+    const totalPrice = getFieldPrice(field, selectedDate)
+    const totalPriceWasit = isAddWasit === 'ya' ? 150000 : 0
+    const totalPricePhotographer = isAddPhotographer === 'ya' ? 350000 : 0
+    const grandTotal = Number(totalPrice) + Number(totalPriceWasit) + Number(totalPricePhotographer)
+    return `Rp ${grandTotal.toLocaleString()}`
   }
   const onSuccesSubmit = () => {
     setModalSubmitting(false)
@@ -97,15 +106,61 @@ const BookingForm = () => {
     <div className="container max-w-screen-xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-2 text-orange-500">Langkah-langkah Booking</h1>
       <BookingSteps />
+      
       {/* Rest of your form content */}
       <div className="mt-8 bg-white rounded-xl container mx-auto px-4 sm:px-6 md:px-8 py-6">
+        <div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Tambahan</h2>
+          <div className="flex justify-between align-baseline  gap-2 border-b border-gray-200 pb-4">
+          <h2 className="text-sm text-gray-600 mb-1">Apakah anda ingin menambahkan Sewa Wasit ? (Rp. 150.000)</h2>
+          <select defaultValue={isAddWasit} onChange={(e) => setIsAddWasit(e.target.value as 'tidak' | 'ya')} className="bg-gray-100 text-black-500 py-1 px-5 rounded-md self-center">
+            <option  value="tidak">Tidak</option>
+            <option  value="ya">Ya</option>
+          </select>
+          </div>
+          <div className="flex justify-between  gap-2 py-4">
+          <h2 className="text-sm text-gray-600 mb-1">Apakah anda ingin menambahkan Photographer by Lensakoe ? (Rp. 350.000)</h2>
+          <select defaultValue={isAddPhotographer} onChange={(e) => setIsAddPhotographer(e.target.value as 'tidak' | 'ya')} className="bg-gray-100 text-black-500 py-1 px-5 rounded-md self-center">
+            <option  value="tidak">Tidak</option>
+            <option  value="ya">Ya</option>
+          </select>
+          </div>
+        
+        </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Booking Details</h2>
         {
           field && (
-            <div className="sm:flex sm:justify-between sm:items-center mb-10">
+            <div className="mb-10">
+            <div className="sm:flex sm:justify-between sm:items-center">
               <p className="text-sm text-gray-600 mb-1">Tanggal: {new Date(selectedDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               <p className="text-sm text-gray-600 mb-1">Jam: {field.description}</p>
-              <p className="text-sm text-gray-600 mb-1">Total: {generateTotalPrice(field, selectedDate)}</p>
+              {/* <p className="text-sm text-gray-600 mb-1">Total: {generateTotalPrice(field, selectedDate)}</p> */}
+            </div>
+            <table className="w-full">
+              <tbody> 
+                <tr>
+                  <td className="text-sm text-gray-600 mb-1">Sewa Lapangan</td>
+                  <td className="text-sm text-gray-600 mb-1 text-right">{generateFieldPrice(field, selectedDate)}</td>
+                </tr>
+                {isAddWasit === 'ya' && (
+                  <tr>
+                    <td className="text-sm text-gray-600 mb-1">Sewa Wasit</td>
+                    <td className="text-sm text-gray-600 mb-1 text-right">{isAddWasit === 'ya' ? 'Rp. 150.000' : 'Rp. 0'}</td>
+                  </tr>
+                )}
+                {isAddPhotographer === 'ya' && (
+                  <tr>
+                    <td className="text-sm text-gray-600 mb-1">Sewa Photographer</td>
+                    <td className="text-sm text-gray-600 mb-1 text-right">{isAddPhotographer === 'ya' ? 'Rp. 350.000' : 'Rp. 0'}</td>
+                  </tr>
+                )}
+                
+                <tr className="border-t border-gray-200">
+                  <td className="text-sm text-gray-600 mb-1">Total</td>
+                  <td className="text-xl text-gray-900 mb-1 text-right">{generateGrandTotal(field, selectedDate)}</td>
+                </tr>
+              </tbody>
+            </table>
             </div>
           )
         }
@@ -138,8 +193,17 @@ const BookingForm = () => {
         </div>
       </div>
 
-      <FormBooking fieldId={id} selectedDate={selectedDate} hour={field?.description || '' }
-      onSuccesSubmit={onSuccesSubmit} price={getPrice(field,selectedDate)} onSubmmiting={onSubmmiting} onErrorSubmit={onErrorSubmit}/>
+      <FormBooking 
+        fieldId={id} 
+        selectedDate={selectedDate} 
+        hour={field?.description || ''}
+        useWasit={isAddWasit}
+        usePhotographer={isAddPhotographer}
+        onSuccesSubmit={onSuccesSubmit} 
+        fieldPrice={getFieldPrice(field, selectedDate)} 
+        onSubmmiting={onSubmmiting} 
+        onErrorSubmit={onErrorSubmit}
+      />
       {modalSuccess && <SuccessModal/>}
       {modalSubmmiting && <LoadingModal/>}
       {modalError && <ErrorModal onClose={() => setModalError(false) }/>}

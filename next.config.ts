@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       hostname: 'images.unsplash.com',
     },
   ],
+  experimental: {
+    serverComponentsExternalPackages: ["pdfkit"],
+  },
 };
 
 export default nextConfig;

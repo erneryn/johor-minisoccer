@@ -15,7 +15,9 @@ interface BookingData {
   fieldId: string;
   fileUrl?: string | null;
   userId?: string;
-  price: string;
+  totalPrice: string;
+  wasitPrice: string;
+  photographerPrice: string;
 }
 
 // Constants
@@ -40,13 +42,15 @@ async function validateFormData(formData: FormData): Promise<BookingData> {
   const phoneNumber = formData.get('phoneNumber') as string;
   const clubName = formData.get('clubName') as string;
   const fieldId = formData.get('fieldId') as string;
-  const price = formData.get('price') as string
+  const totalPrice = formData.get('totalPrice') as string
+  const wasitPrice = formData.get('wasitPrice') as string
+  const photographerPrice = formData.get('photographerPrice') as string
 
-  if (!date || !hour || !email || !phoneNumber || !clubName || !fieldId || !price) {
+  if (!date || !hour || !email || !phoneNumber || !clubName || !fieldId || !totalPrice) {
     throw new Error('Missing required fields');
   }
 
-  return { date, hour, email, phoneNumber, clubName, fieldId, price };
+  return { date, hour, email, phoneNumber, clubName, fieldId, totalPrice , wasitPrice, photographerPrice};
 }
 
 async function resizeImage(buffer: Buffer): Promise<Buffer> {
@@ -120,7 +124,9 @@ async function createBooking(data: BookingData) {
       fieldId: data.fieldId,
       userId: data.userId,
       status: 'PENDING',
-      totalPrice: Number(data.price) || 0,
+      totalPrice: Number(data.totalPrice) || 0,
+      wasitPrice: Number(data.wasitPrice) > 0 ? Number(data.wasitPrice) : null,
+      photographerPrice: Number(data.photographerPrice) > 0 ? Number(data.photographerPrice) : null,
     },
     include: {
       field: true
@@ -149,7 +155,19 @@ export async function POST(request: NextRequest) {
 
     // Send confirmation email
     try {
-      await sendConfirmationEmail(booking, bookingData.date, bookingData.hour);
+      const emailData = {
+        id: booking.id,
+        email: booking.email,
+        clubName: booking.clubName,
+        phoneNumber: booking.phoneNumber,
+        totalPrice: booking.totalPrice,
+        fieldDescription: booking.field.description || 'No description available',
+        wasitPrice: booking.wasitPrice,
+        photographerPrice: booking.photographerPrice,
+        fieldPrice: booking.field.price
+    }
+    console.log(emailData, 'emailData')
+      await sendConfirmationEmail(emailData, bookingData.date, bookingData.hour);
       console.log('Confirmation email sent successfully');
     } catch (emailError) {
       console.error('Error sending confirmation email:', emailError);

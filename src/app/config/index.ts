@@ -1,6 +1,6 @@
 import configData from './config.json';
 
-export const { features, cards, promotions } = configData;
+export const { features, cards, promotions, partner } = configData;
 
 // Type definitions
 export interface Feature {
@@ -30,3 +30,14 @@ export interface Promotion {
   image: string;
   badge?: string;
 } 
+
+export interface Partner {
+  id: number;
+  mainTitle?: string;
+  title: string;
+  description: string;
+  buttonText?: string;
+  buttonLink?: string;
+  image: string;
+  badge?: string;
+}

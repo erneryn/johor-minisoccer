@@ -58,7 +58,10 @@ export async function GET(request: NextRequest) {
         clubName: booking.clubName,
         fileUrl: booking.fileUrl,
         status: booking.status,
+        fieldPrice: booking.field.price,
         totalPrice: booking.totalPrice,
+        wasitPrice: booking.wasitPrice,
+        photographerPrice: booking.photographerPrice,
         bookingSubmittedAt: booking.createdAt,
         bookingForDate: booking.startTime
     }))

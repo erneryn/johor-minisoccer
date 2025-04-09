@@ -24,6 +24,9 @@ export interface BookingWithField {
   fileUrl: string;
   status: string;
   totalPrice: number;
+  fieldPrice: number;
+  wasitPrice: number | null;
+  photographerPrice: number | null;
   bookingSubmittedAt: Date;
   bookingForDate: Date;
 }
@@ -121,9 +124,11 @@ const AdminPage = () => {
               <TableHeadCell>Email / No HP</TableHeadCell>
               <TableHeadCell>Nama Club</TableHeadCell>
               <TableHeadCell>Booking Untuk Tanggal</TableHeadCell>
-              <TableHeadCell>Jam Main</TableHeadCell>
               <TableHeadCell>Status</TableHeadCell>
-              <TableHeadCell>Total Price</TableHeadCell>
+              <TableHeadCell>Harga Lapangan</TableHeadCell>
+              <TableHeadCell>Harga Wasit</TableHeadCell>
+              <TableHeadCell>Harga Photographer</TableHeadCell>
+              <TableHeadCell>Harga Total</TableHeadCell>
               <TableHeadCell>Bukti Pembayaran</TableHeadCell>
               <TableHeadCell>Dibuat Pada Tanggal</TableHeadCell>
               <TableHeadCell>
@@ -154,8 +159,9 @@ const AdminPage = () => {
                   <TableCell>{booking.clubName}</TableCell>
                   <TableCell>
                     {formatDate(booking.bookingForDate, "date")}
+                    <br />
+                    {booking.fieldDescription}
                   </TableCell>
-                  <TableCell>{booking.fieldDescription}</TableCell>
                   <TableCell>
                     <span
                       className={`px-2 py-1 rounded-full text-sm ${
@@ -171,7 +177,18 @@ const AdminPage = () => {
                       {booking.status}
                     </span>
                   </TableCell>
-                  <TableCell>{booking.totalPrice.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 })}</TableCell>
+                  <TableCell>
+                    {booking?.fieldPrice?.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 })}
+                  </TableCell>
+                  <TableCell>
+                    {booking?.wasitPrice ? booking?.wasitPrice?.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }) : "-"}
+                  </TableCell>
+                  <TableCell>
+                    {booking?.photographerPrice ? booking?.photographerPrice?.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }) : "-"}
+                  </TableCell>
+                  <TableCell>
+                    {booking?.totalPrice?.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 })}
+                  </TableCell>
                   <TableCell>
                     <a
                       href={booking.fileUrl}
