@@ -12,6 +12,8 @@ const Booking = () => {
   // const { session, loading } = useServerSession()
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [availableFields, setAvailableFields] = useState([]);
+  const [isHoliday, setIsHoliday] = useState(false);
+  const [isWeekend, setIsWeekend] = useState(false);
   // const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   // const [fieldId, setFieldId] = useState('');
   const [loadingField, setLoadingField ] = useState(false)
@@ -32,6 +34,8 @@ const Booking = () => {
       const data = await response.json();
       console.log('API Response:', data); // Debug log
       setAvailableFields(data.fields);
+      setIsHoliday(data.isHoliday);
+      setIsWeekend(data.isWeekend);
     } catch (error) {
       console.error('Fetch Error:', error);
       setError('Network error. Please check your connection and try again.');
@@ -126,8 +130,9 @@ const Booking = () => {
               <CardBooking
                 key={field.id}
                 field={field}
-                selectedDate={selectedDate}
                 handleBooking={handleBooking}
+                isHoliday={isHoliday}
+                isWeekend={isWeekend}
               />
             ))}
           </div>

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import holiday from "@/app/config/holiday.json";
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,8 +36,8 @@ export async function GET(request: NextRequest) {
     // }
     // Check if selected date is weekend
     const selectedDay = new Date(date).getDay();
-    const isWeekend = selectedDay === 0 || selectedDay === 6 || selectedDay === 5; // 0 is Sunday, 5 friday, 6 is Saturday
-
+    const isHoliday = holiday.includes(date);
+    const isWeekend = isHoliday || selectedDay === 0 || selectedDay === 6 || selectedDay === 5;  // 0 is Sunday, 5 friday, 6 is Saturday
     // Get all active fields
     const fields = await prisma.field.findMany({
       where: {
@@ -58,15 +59,6 @@ export async function GET(request: NextRequest) {
                 }
               }
             ]
-          },
-          {
-            type: 'holiday',
-            startDate: {
-              lte: new Date(date)
-            },
-            endDate: {
-              gte: new Date(date)
-            }
           }
         ]
       },
@@ -77,8 +69,7 @@ export async function GET(request: NextRequest) {
 
     // Filter to only show promo fields if they exist
     const promoFields = fields.filter(field => field.type === 'promo');
-    const holidayFields = fields.filter(field => field.type === 'holiday');
-    const filteredFields = promoFields.length > 0 ? promoFields : holidayFields.length > 0 ? holidayFields : fields;
+    const filteredFields = promoFields.length > 0 ? promoFields : fields;
     // get booking by date
     const bookings = await prisma.booking.findMany({
       where: {
@@ -100,11 +91,13 @@ export async function GET(request: NextRequest) {
       return {
         ...field,
         price: field.type === 'promo' ? isWeekend ? field.weekendPrice : field.price : field.price,
-        isAvailable: availableTimeSlots.length === 0
+        isAvailable: availableTimeSlots.length === 0,
       }
     })
     return NextResponse.json({
-      fields: availableFields
+      fields: availableFields,
+      isHoliday,
+      isWeekend,
     });
   } catch (error) {
     console.error("Error fetching available slots:", error);

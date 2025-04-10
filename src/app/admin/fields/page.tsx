@@ -216,12 +216,11 @@ const FieldModal = ({open, setOpen, onFieldAdded}: {open: boolean, setOpen: (ope
                       <option value="regular">Regular</option>
                       <option value="weekend">Weekend</option>
                       <option value="promo">Promo</option>
-                      <option value="holiday">Holiday</option>
                     </select>
                     {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type}</p>}
                   </div>
                 </div>
-                { (formData.type === 'promo' || formData.type === 'holiday') && (
+                { (formData.type === 'promo') && (
                   <>
                    {formData.type === 'promo' && (
                     <div>
