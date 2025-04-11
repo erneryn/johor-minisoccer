@@ -1,6 +1,6 @@
 import {  NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
+import { isHolidayOrWeekend } from "@/lib/holiday";
 enum BookingStatus {
     PENDING = 'PENDING',
     REJECTED = 'REJECTED',
@@ -49,22 +49,29 @@ export async function GET(request: NextRequest) {
         where: {}
     })
 
-    const response = bookings.map((booking) => ({
-        id: booking.id,
-        email: booking.email,
-        fieldDescription: booking.field.description,
-        userId: booking.userId,
-        phoneNumber: booking.phoneNumber,
-        clubName: booking.clubName,
-        fileUrl: booking.fileUrl,
-        status: booking.status,
-        fieldPrice: booking.field.price,
-        totalPrice: booking.totalPrice,
-        wasitPrice: booking.wasitPrice,
-        photographerPrice: booking.photographerPrice,
-        bookingSubmittedAt: booking.createdAt,
-        bookingForDate: booking.startTime
-    }))
+    
+
+    const response = bookings.map((booking) => {
+        const IsHolidayOrWeekend = isHolidayOrWeekend(booking.startTime);
+        return  {
+            id: booking.id,
+            email: booking.email,
+            fieldDescription: booking.field.description,
+            userId: booking.userId,
+            phoneNumber: booking.phoneNumber,
+            clubName: booking.clubName,
+            fileUrl: booking.fileUrl,
+            status: booking.status,
+            fieldPrice: IsHolidayOrWeekend ? booking.field.weekendPrice : booking.field.price,
+            totalPrice: booking.totalPrice,
+            wasitPrice: booking.wasitPrice,
+            photographerPrice: booking.photographerPrice,
+            bookingSubmittedAt: booking.createdAt,
+            bookingForDate: booking.startTime
+        }
+
+    })
+       
     return NextResponse.json({
         bookings: response,
         total,

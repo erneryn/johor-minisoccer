@@ -1,6 +1,7 @@
 import { sendSuccesOrRejectEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { isHolidayOrWeekend } from "@/lib/holiday";
 
 export async function GET(_: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -18,6 +19,7 @@ export async function GET(_: NextRequest,
     if (!booking) {
         return NextResponse.json({ error: "Booking not found" }, { status: 404 })
     }
+    const IsHolidayOrWeekend = isHolidayOrWeekend(booking.startTime);
     const response = {
         id: booking.id,
         email: booking.email,
@@ -28,7 +30,7 @@ export async function GET(_: NextRequest,
         fileUrl: booking.fileUrl,
         status: booking.status,
         totalPrice: booking.totalPrice,
-        fieldPrice: booking.field.price,
+        fieldPrice: IsHolidayOrWeekend ? booking.field.weekendPrice : booking.field.price,
         wasitPrice: booking.wasitPrice,
         photographerPrice: booking.photographerPrice,
         bookingSubmittedAt: booking.createdAt,
