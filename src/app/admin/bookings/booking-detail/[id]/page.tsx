@@ -83,65 +83,94 @@ const BookingDetail = () => {
   }, [id, isSuccess]);
   return (
     <div className="relative container mx-auto px-4 sm:px-6 md:px-8 sm:w-4/5 space-y-8 py-12">
-			{isSuccess && <Toast className="absolute top-0 left-2 sm:w-1/4 w-full flex justify-between items-center">
-        <div className="inline-flex shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-          <HiCheck className="h-5 w-5" /> 
-        </div>
-        <div className="ml-3 text-sm font-normal">Successfully modified booking.</div>
-        <ToastToggle className="m-0" onDismiss={() => setIsSuccess(false) }  />
-      </Toast>}
-			{
-				isError && <Toast className="absolute top-0 right-0 left-0 w-1/4 flex justify-between items-center">
-					<div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
-						<HiExclamation className="h-5 w-5" />
-					</div>
-					<div className="ml-3 text-sm font-normal">Error approving booking.</div>
-					<ToastToggle className="m-0" onDismiss={() => setIsError(false) }  />
-				</Toast>
-			}
-			<div>
-				<Link href="/admin/bookings" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md inline-flex items-center">
-					<span>← Back</span>
-				</Link>
-			</div>
-			{loading ? <Loading /> : (
-      <div className="grid grid-cols-1 sm:grid-cols-2 items-center bg-slate-50 rounded-xl">				
-        <div className="w-1/2 p-4">
-          <h1 className="text-2xl font-bold text-left text-orange-500">
-            Booking Detail
-          </h1>
-        </div>
-        <div className="w-full p-4 flex justify-end gap-4">
-         {booking && booking.status == 'PENDING' ? (<><button onClick={() => handleActionBooking('REJECTED')} disabled={isRejected || isSubmitted} className="bg-gray-500 text-white px-4 py-2 rounded-md">
-            {isRejected ? 'Rejected...' : 'Reject'}
-          </button>
-          <button onClick={() => handleActionBooking('COMPLETED')} disabled={isSubmitted || isRejected} className="bg-orange-500 text-white px-4 py-2 rounded-md">
-            {isSubmitted ? 'Submitting...' : 'Approve'}
-          </button></>): (<></>)}
-          {booking && <PDFDownloadButton booking={booking} />}
-        </div>
-				<div className="">
-          <table className="w-full">
-            <tbody>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Email</td>
-                <td className="py-2 px-4">{booking?.email}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">No Hp</td>
-                <td className="py-2 px-4">{booking?.phoneNumber}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Nama Club</td>
-                <td className="py-2 px-4">{booking?.clubName}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Jam Main</td>
-                <td className="py-2 px-4">{booking?.fieldDescription}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Status</td>
-                <td className="py-2 px-4"> <span
+      {isSuccess && (
+        <Toast className="absolute top-0 left-2 sm:w-1/4 w-full flex justify-between items-center">
+          <div className="inline-flex shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+            <HiCheck className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            Successfully modified booking.
+          </div>
+          <ToastToggle className="m-0" onDismiss={() => setIsSuccess(false)} />
+        </Toast>
+      )}
+      {isError && (
+        <Toast className="absolute top-0 right-0 left-0 w-1/4 flex justify-between items-center">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+            <HiExclamation className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            Error approving booking.
+          </div>
+          <ToastToggle className="m-0" onDismiss={() => setIsError(false)} />
+        </Toast>
+      )}
+      <div>
+        <Link
+          href="/admin/bookings"
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md inline-flex items-center"
+        >
+          <span>← Back</span>
+        </Link>
+      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-center bg-slate-50 rounded-xl">
+          <div className="w-1/2 p-4">
+            <h1 className="text-2xl font-bold text-left text-orange-500">
+              Booking Detail
+            </h1>
+          </div>
+          <div className="w-full p-4 flex justify-end gap-4">
+            {
+              booking && ['COMPLETED', 'PENDING'].includes(booking.status) && (
+                <button
+                  onClick={() => handleActionBooking("REJECTED")}
+                  disabled={isRejected || isSubmitted}
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                >
+                  {isRejected ? "Rejected..." : "Reject"}
+                </button>
+              )
+            }
+             {
+              booking && ['REJECTED', 'PENDING'].includes(booking.status) && (
+                <button
+                  onClick={() => handleActionBooking("COMPLETED")}
+                  disabled={isSubmitted || isRejected}
+                  className="bg-orange-500 text-white px-4 py-2 rounded-md"
+                >
+                  {isSubmitted ? "Submitting..." : "Approve"}
+                </button>
+              )
+            }
+            {booking && <PDFDownloadButton booking={booking} />}
+          </div>
+          <div className="">
+            <table className="w-full">
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Email</td>
+                  <td className="py-2 px-4">{booking?.email}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">No Hp</td>
+                  <td className="py-2 px-4">{booking?.phoneNumber}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Nama Club</td>
+                  <td className="py-2 px-4">{booking?.clubName}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Jam Main</td>
+                  <td className="py-2 px-4">{booking?.fieldDescription}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Status</td>
+                  <td className="py-2 px-4">
+                    {" "}
+                    <span
                       className={`px-2 py-1 rounded-full text-sm ${
                         booking?.status === "PENDING"
                           ? "bg-yellow-100 text-yellow-800"
@@ -150,67 +179,107 @@ const BookingDetail = () => {
                           : booking?.status === "REJECTED"
                           ? "bg-red-100 text-red-800"
                           : "bg-gray-100 text-gray-800"
-                      }`}>{booking?.status}</span></td>
-              </tr>
-             
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Booking Untuk Tanggal</td>
-                <td className="py-2 px-4">{booking?.bookingForDate && formatDate(booking.bookingForDate, 'date')}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Booking Dibuat Pada Tanggal</td>
-                <td className="py-2 px-4">{booking?.bookingSubmittedAt && formatDate(booking.bookingSubmittedAt, 'datetime')}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Harga Lapangan</td>
-                <td className="py-2 px-4">{booking?.fieldPrice?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Wasit Price</td>
-                <td className="py-2 px-4">{booking?.wasitPrice ? booking?.wasitPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)'}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Photographer Price</td>
-                <td className="py-2 px-4">{booking?.photographerPrice ? booking?.photographerPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp.0 (tidak sewa)'}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2 px-4 font-medium">Total Price</td>
-                <td className="py-2 px-4">{booking?.totalPrice?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
-              </tr>
-              <tr>
-                <td className="py-2 px-4 font-medium">Payment Proof</td>
-                <td className="py-2 px-4">
-                  <a 
-                    href={booking?.fileUrl} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    View Payment Proof
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-4">
-          {booking?.fileUrl && (
-            <div className="p-4">
-              <h3 className="text-lg font-medium mb-4 p-2">Payment Proof Image:</h3>
-              <div className="relative w-full max-w-lg h-[400px] mb-8">
-                <Image
-                  src={booking.fileUrl}
-                  alt="Payment proof"
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+                      }`}
+                    >
+                      {booking?.status}
+                    </span>
+                  </td>
+                </tr>
+
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">
+                    Booking Untuk Tanggal
+                  </td>
+                  <td className="py-2 px-4">
+                    {booking?.bookingForDate &&
+                      formatDate(booking.bookingForDate, "date")}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">
+                    Booking Dibuat Pada Tanggal
+                  </td>
+                  <td className="py-2 px-4">
+                    {booking?.bookingSubmittedAt &&
+                      formatDate(booking.bookingSubmittedAt, "datetime")}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Harga Lapangan</td>
+                  <td className="py-2 px-4">
+                    {booking?.fieldPrice?.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Wasit Price</td>
+                  <td className="py-2 px-4">
+                    {booking?.wasitPrice
+                      ? booking?.wasitPrice.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })
+                      : "Rp.0 (tidak sewa)"}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Photographer Price</td>
+                  <td className="py-2 px-4">
+                    {booking?.photographerPrice
+                      ? booking?.photographerPrice.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })
+                      : "Rp.0 (tidak sewa)"}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Total Price</td>
+                  <td className="py-2 px-4">
+                    {booking?.totalPrice?.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-4 font-medium">Payment Proof</td>
+                  <td className="py-2 px-4">
+                    <a
+                      href={booking?.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      View Payment Proof
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-4">
+            {booking?.fileUrl && (
+              <div className="p-4">
+                <h3 className="text-lg font-medium mb-4 p-2">
+                  Payment Proof Image:
+                </h3>
+                <div className="relative w-full max-w-lg h-[400px] mb-8">
+                  <Image
+                    src={booking.fileUrl}
+                    alt="Payment proof"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-			)}
+      )}
     </div>
   );
 };
