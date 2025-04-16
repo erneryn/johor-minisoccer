@@ -1,4 +1,6 @@
 import PDFDocument from 'pdfkit';
+import path from 'path';
+import fs from 'fs';
 
 interface Booking {
   id: string;
@@ -34,8 +36,15 @@ export async function generateBookingPDF(booking: Booking): Promise<Buffer> {
       doc.on('error', reject);
       
       // Add logo image if available
-      const logoPath = 'public/mainlogo.jpeg'
-      doc.image(logoPath, 25, 25, { width: 100 });
+      try {
+        const logoPath = path.join(process.cwd(), 'public', 'mainlogo.jpeg');
+        if (fs.existsSync(logoPath)) {
+          doc.image(logoPath, 25, 25, { width: 100 });
+        }
+      } catch (error) {
+        console.error('Error loading logo:', error);
+        // Continue without logo if there's an error
+      }
 
       // Add header
       doc.fontSize(20).text('Johor Mini Soccer', { align: 'center' });
@@ -76,7 +85,6 @@ export async function generateBookingPDF(booking: Booking): Promise<Buffer> {
       // Draw rows with proper spacing and lines
       let currentY = tableTop + rowHeight;
       rows.forEach(([label, value]) => {
-        
         // Add content
         doc.text(label, tableLeft, currentY + 5, { width: col1Width });
         doc.text(value, tableLeft + col1Width, currentY + 5, { width: col2Width });
@@ -107,8 +115,6 @@ export async function generateBookingPDF(booking: Booking): Promise<Buffer> {
       // Draw price rows with proper spacing and lines
       currentY = doc.y;
       priceRows.forEach(([label, value]) => {
-        // Draw horizontal line
-        
         // Add content
         doc.text(label, tableLeft, currentY + 5, { width: col1Width });
         doc.text(value, tableLeft + col1Width, currentY + 5, { width: col2Width });
@@ -150,8 +156,6 @@ export async function generateBookingPDF(booking: Booking): Promise<Buffer> {
         align: 'center',
         width: 500
       });
-      
-      doc.moveDown();
       
       // Finalize the PDF
       doc.end();
