@@ -63,11 +63,11 @@ const BookingForm = () => {
     }
     return field.price
   }
-  const generateGrandTotal = (field: Field, selectedDate: string) => {
+  const generateGrandTotal = (field: Field, selectedDate: string, percent: number = 100) => {
     const totalPrice = getFieldPrice(field, selectedDate)
     const totalPriceWasit = isAddWasit === 'ya' ? 150000 : 0
     const totalPricePhotographer = isAddPhotographer === 'ya' ? 350000 : 0
-    const grandTotal = Number(totalPrice) + Number(totalPriceWasit) + Number(totalPricePhotographer)
+    const grandTotal = (Number(totalPrice) + Number(totalPriceWasit) + Number(totalPricePhotographer) )/ (100/percent)
     return `Rp ${grandTotal.toLocaleString()}`
   }
   const onSuccesSubmit = () => {
@@ -188,7 +188,7 @@ const BookingForm = () => {
           </button>
         </div>
         <div className="mt-4 text-sm text-gray-600">
-          <p>Silahkan transfer sesuai dengan total pembayaran ke rekening di atas.</p>
+          <p>Silahkan transfer minimal  <span className="text-black font-extrabold text-lg"> 50% {generateGrandTotal(field, selectedDate, 50)}</span>  dari total pembayaran ke rekening di atas.</p>
           <p className="mt-2">Setelah transfer, simpan bukti pembayaran untuk dilampirkan pada form berikutnya.</p>
         </div>
       </div>
