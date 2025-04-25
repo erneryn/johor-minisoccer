@@ -8,7 +8,7 @@ import FormBooking from "@/components/formBooking";
 import SuccessModal from "@/components/successModal";
 import ErrorModal from '@/components/errorModal'
 import LoadingModal from "../loadingModal";
-
+import { isHolidayOrWeekend } from "@/lib/holiday";
 
 const BookingForm = () => {
   const searchParams = useSearchParams()
@@ -48,17 +48,15 @@ const BookingForm = () => {
 
   const generateFieldPrice = (field: Field, selectedDate: string) => {
     const date = new Date(selectedDate)
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
-    if(isWeekend && field.weekendPrice && field.type === 'promo') {
-      return   `Rp ${field.weekendPrice.toLocaleString()} (Weekend)`
+    if(isHolidayOrWeekend(date) && field.weekendPrice && field.type === 'promo') {
+      return  `Rp ${field.weekendPrice.toLocaleString()}`
     }
     return `Rp ${field.price.toLocaleString()}`
   }
 
   const getFieldPrice = (field: Field, selectedDate: string) => {
     const date = new Date(selectedDate)
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6 || date.getDay() === 5
-    if(isWeekend && field.weekendPrice && field.type === 'promo') {
+    if(isHolidayOrWeekend(date) && field.weekendPrice && field.type === 'promo') {
       return field.weekendPrice
     }
     return field.price
