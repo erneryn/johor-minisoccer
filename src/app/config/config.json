@@ -62,10 +62,43 @@
     "partner": [
         {
             "id": 1,
-            "title": "Sport Photography",
-            "mainTitle":"LensaKoe",
+            "title": "",
+            "mainTitle":"",
             "description": "",
-            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1744218226/fdkkk62fiehxqr7gbnk7.png"
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1744218226/fdkkk62fiehxqr7gbnk7.png",
+            "type": "partner"
+        },
+        {
+            "id": 2,
+            "title": "",
+            "mainTitle":"",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565657/iawedwnpcr4czgw3fhmy.png",
+            "type": "partner"
+        },
+        {
+            "id": 3,
+            "title": "",
+            "mainTitle":"",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565919/fdnilfbzillzeblcttqm.png",
+            "type": "partner"
+        },
+        {
+            "id": 4,
+            "title": "",
+            "mainTitle":"",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565905/zfxvywyyqlop36io4lya.png",
+            "type": "partner"
+        },
+        {
+            "id": 5,
+            "title": "",
+            "mainTitle":"",
+            "description": "",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745568147/af1cjvsseu69t6wmomos.jpg",
+            "type": "partner"
         }
     ]
 }
