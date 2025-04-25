@@ -62,43 +62,60 @@
     "partner": [
         {
             "id": 1,
-            "title": "",
-            "mainTitle":"",
-            "description": "",
+            "title": "Lensakoe",
+            "description": "Sport photography",
             "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1744218226/fdkkk62fiehxqr7gbnk7.png",
-            "type": "partner"
+            "type": "partner",
+            "instagram": "https://www.instagram.com/lensakoe/",
+            "instagramName": "lensakoe"
         },
         {
             "id": 2,
-            "title": "",
+            "title": "PAX",
             "mainTitle":"",
-            "description": "",
-            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565657/iawedwnpcr4czgw3fhmy.png",
-            "type": "partner"
+            "description": "Coffee - We Serve You Better",
+            "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745593792/zhks6ex1bx6vz9fyagro.png",
+            "type": "partner",
+            "instagram": "https://www.instagram.com/paxmedan/",
+            "instagramName": "paxmedan",
+            "maps": "https://maps.app.goo.gl/ajZW6qcd5gyqkgz4A",
+            "mapsName": "Jl. Bunga Cempaka No.36"
         },
         {
             "id": 3,
-            "title": "",
+            "title": "Kattuju",
             "mainTitle":"",
-            "description": "",
+            "description": "Coffee & Eatery",
             "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565919/fdnilfbzillzeblcttqm.png",
-            "type": "partner"
+            "type": "partner",
+            "instagramName": "kattuju.mdn",
+            "instagram": "https://www.instagram.com/kattuju.mdn/",
+            "maps": "https://maps.app.goo.gl/yveyHTyKNJNd4dKUA",
+            "mapsName": "Jl. Sakti Lubis Gg Bengkel No.18,"
         },
         {
             "id": 4,
-            "title": "",
+            "title": "Kattuju",
             "mainTitle":"",
-            "description": "",
+            "description": "Vape Store",
             "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745565905/zfxvywyyqlop36io4lya.png",
-            "type": "partner"
+            "type": "partner",
+            "instagramName": "kvapestore.mdn",
+            "instagram": "https://www.instagram.com/kvapestore.mdn/",
+            "maps": "https://maps.app.goo.gl/yveyHTyKNJNd4dKUA",
+            "mapsName": "Jl. Sakti Lubis Gg Bengkel No.18,"
         },
         {
             "id": 5,
-            "title": "",
+            "title": "FM Garage",
             "mainTitle":"",
-            "description": "",
+            "description": "Service, Sparepart, modifikasi, Cuci Motor",
             "image": "https://res.cloudinary.com/deyzubayn/image/upload/v1745568147/af1cjvsseu69t6wmomos.jpg",
-            "type": "partner"
+            "type": "partner",
+            "instagram": "https://www.instagram.com/fmgaragemedan/",
+            "instagramName": "fmgaragemedan",
+            "maps": "https://maps.app.goo.gl/wF3AUsS7KRp2dJpQA",
+            "mapsName": "Jl. Sakti Lubis No.11c"
         }
     ]
 }

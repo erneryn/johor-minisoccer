@@ -40,4 +40,6 @@ export interface Partner {
   buttonLink?: string;
   image: string;
   badge?: string;
+  instagram?: string;
+  maps?: string;
 }
