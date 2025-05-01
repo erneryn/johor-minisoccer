@@ -12,12 +12,18 @@ interface BookingWhereInput {
     email? : {
         contains: string;
     };
+    startTime?: {
+        gte?: Date;
+        lte?: Date;
+    };
 }
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const email = searchParams.get('email') || '';
+    const dateStart = searchParams.get('dateStart') || '';
+    const dateEnd = searchParams.get('dateEnd') || '';
     const status = searchParams.get('status') || '';
     const limit = 10;
     const offset = (page - 1) * limit;
@@ -30,6 +36,12 @@ export async function GET(request: NextRequest) {
     if (email) {
         where.email = {
             contains: email.toLowerCase(),
+        };
+    }
+    if (dateStart && dateEnd) {
+        where.startTime = {
+            gte: new Date(dateStart),
+            lte: new Date(dateEnd)
         };
     }
 

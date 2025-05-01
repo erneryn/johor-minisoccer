@@ -38,8 +38,8 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
   const onPageChange = (page: number) => setCurrentPage(page);
-
 
   const statusOptions = [
     { value: "ALL", label: "All Status" },
@@ -73,10 +73,10 @@ const AdminPage = () => {
     );
   };
 
-  const fetchBookings = async (currentPage: number, status: string, search: string) => {
+  const fetchBookings = async (currentPage: number, status: string, search: string, date: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/bookings?page=${currentPage}&status=${status}&email=${search}`);
+      const response = await fetch(`/api/bookings?page=${currentPage}&status=${status}&email=${search}&dateStart=${date}&dateEnd=${date}`);
       const data = await response.json();
       setBookings(data.bookings);
       setTotalPages(data.totalPages);
@@ -88,17 +88,22 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    fetchBookings(currentPage, statusFilter, searchQuery);
-  }, [currentPage, statusFilter, searchQuery]);
+    fetchBookings(currentPage, statusFilter, searchQuery, dateFilter);
+  }, [currentPage, statusFilter, searchQuery, dateFilter]);
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusFilter(e.target.value);
     setCurrentPage(1); // Reset to first page when filter changes
   };
 
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateFilter(e.target.value);
+    setCurrentPage(1); // Reset to first page when date changes
+  };
+
   return (
     <div className="bg-white container mx-auto">
-      <div className="p-5 flex justify-end">
+      <div className="p-5 flex justify-end gap-4">
         <Select
           className="w-48"
           value={statusFilter}
@@ -111,7 +116,13 @@ const AdminPage = () => {
           ))}
         </Select>
         <TextInput
-          className="w-72 pl-5"
+          type="date"
+          className="w-48"
+          value={dateFilter}
+          onChange={handleDateChange}
+        />
+        <TextInput
+          className="w-72"
           placeholder="Search by email"
           value={searchQuery}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}

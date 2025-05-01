@@ -35,10 +35,13 @@ const Footer = async () => {
                 </div>
               </div>
             </div>
-                <div className="w-full flex justify-center items-center">
+                <div className="w-full text-center">
                   <p className="mt-2 text-gray-400 text-xs">
                     © {new Date().getFullYear()} Johor Mini Soccer. All rights reserved.
                   </p>
+                  <Link href="https://www.instagram.com/ern_concept/" className="mt-2 text-gray-400 text-xs">
+                      Developed by ern_concept
+                  </Link>
                 </div>
           </footer>
     )
