@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
             clubName: booking.clubName,
             fileUrl: booking.fileUrl,
             status: booking.status,
-            fieldPrice: IsHolidayOrWeekend ? booking.field.weekendPrice : booking.field.price,
+            fieldPrice: IsHolidayOrWeekend ? booking.field.weekendPrice ? booking.field.weekendPrice : booking.field.price : booking.field.price,
             totalPrice: booking.totalPrice,
             wasitPrice: booking.wasitPrice,
             photographerPrice: booking.photographerPrice,
